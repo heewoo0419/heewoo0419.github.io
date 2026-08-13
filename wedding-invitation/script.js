@@ -5,9 +5,11 @@
    함께 씁니다. 두 화면의 마크업이 완전히 같지는 않으므로, 각 기능은
    자기 DOM 이 있을 때만 동작합니다. 없는 화면에서는 조용히 넘어갑니다.
 
-   화면별로 다른 것은 두 곳뿐입니다.
-     · 갤러리 배치   <body data-gallery-layout="square"> 면 정사각 3열
-     · 사진 장수     <body data-gallery="9"> 로 덮어씁니다
+   화면별로 다른 값은 <body> 의 data-* 로 넘깁니다.
+     · 갤러리 배치   data-gallery-layout="square" 면 정사각 3열
+     · 사진 장수     data-gallery="9"
+     · 공유 주소     data-share-url="…"        (없으면 CONFIG.shareUrl)
+     · 표지 상태바   data-cover-tint="#0d0c0b"  (없으면 meta 기본값)
    ============================================================ */
 
 /* ============================================================
@@ -26,9 +28,8 @@ const CONFIG = {
   // 같은 Application 의 "Web 서비스 URL" 에 이 페이지의 도메인도 등록해야 합니다.
   naverKeyId: "8ecuewium6",
 
-  // 공유로 나가는 주소는 ab.html — 받는 분을 본 화면과 Trip 시안 중 하나로 갈라 보냅니다.
-  // 한 디자인만 보내고 싶어지면 이 값을 ".../wedding-invitation/" 으로 되돌리면 됩니다.
-  shareUrl: "https://heewoo0419.github.io/wedding-invitation/ab.html",
+  // 공유로 나가는 기본 주소. 화면마다 다르게 하려면 <body data-share-url="…"> 로 덮어씁니다.
+  shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
   shareImage: "https://heewoo0419.github.io/wedding-invitation/og-image.jpg",
 
   // 카카오톡 카드·시스템 공유에 찍히는 제목. og:title 과 같은 문구로 맞춰 두세요.
@@ -62,7 +63,10 @@ const CONFIG = {
 /* 화면이 따로 지정한 값이 있으면 그것을 씁니다 */
 const PAGE = {
   gallery: Number(document.body.dataset.gallery) || CONFIG.gallery,
-  square: document.body.dataset.galleryLayout === "square"
+  square: document.body.dataset.galleryLayout === "square",
+  // 공유 주소 — 지금은 두 화면 모두 ab.html(분기 입구)을 내보냅니다.
+  // 한 디자인으로 정해지면 각 html 의 data-share-url 만 고치면 됩니다.
+  shareUrl: document.body.dataset.shareUrl || CONFIG.shareUrl
 };
 
 /* ---------- 토스트 · 복사 ---------- */
@@ -586,19 +590,19 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
     const data = {
       title: CONFIG.shareTitle,
       text: CONFIG.shareText,
-      url: CONFIG.shareUrl
+      url: PAGE.shareUrl
     };
     if (navigator.share) {
       try { await navigator.share(data); return; } catch {}
     }
-    copyText(CONFIG.shareUrl);
+    copyText(PAGE.shareUrl);
     showToast("주소를 복사했습니다. 카카오톡에 붙여 넣어 주세요");
   }
 
   btn.addEventListener("click", () => {
     if (!ready) { fallback(); return; }
 
-    const link = { mobileWebUrl: CONFIG.shareUrl, webUrl: CONFIG.shareUrl };
+    const link = { mobileWebUrl: PAGE.shareUrl, webUrl: PAGE.shareUrl };
     const content = {
       title: CONFIG.shareTitle,
       description: CONFIG.kakaoDesc || CONFIG.shareText,
@@ -641,13 +645,13 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
   const linkBtn = document.getElementById("linkBtn");
   const shareBtn = document.getElementById("shareBtn");
 
-  if (linkBtn) linkBtn.addEventListener("click", () => copyText(CONFIG.shareUrl));
+  if (linkBtn) linkBtn.addEventListener("click", () => copyText(PAGE.shareUrl));
 
   if (shareBtn) shareBtn.addEventListener("click", async () => {
     const data = {
       title: CONFIG.shareTitle,
       text: CONFIG.shareText,
-      url: CONFIG.shareUrl
+      url: PAGE.shareUrl
     };
     if (navigator.share) {
       try { await navigator.share(data); } catch {}
