@@ -406,8 +406,9 @@ const CONFIG = {
     const no = String(i).padStart(2, "0");
     const hidden = i > CONFIG.galleryVisible ? " is-hidden" : "";
     const [w, h] = CONFIG.gallerySize[i] || CONFIG.gallerySize.default;
+    const wide = w > h ? " is-wide" : "";   // 가로 사진은 한 줄을 다 씁니다
     html +=
-      '<button class="tile' + hidden + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
+      '<button class="tile' + hidden + wide + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
         '<img src="photos/gallery-' + no + '.jpg" alt="" loading="lazy"' +
           ' width="' + w + '" height="' + h + '"' +
           ' onerror="this.parentElement.classList.add(\'is-empty\');this.remove()">' +
