@@ -596,6 +596,11 @@ a{color:inherit;text-decoration:none}
   margin:2px 0 0;
   font-size:13.5px;
 }
+.acct-btns{
+  flex:none;
+  display:flex;
+  gap:5px;
+}
 .copy{
   flex:none;
   display:inline-flex;
@@ -609,6 +614,22 @@ a{color:inherit;text-decoration:none}
 }
 .copy:hover{background:#eceae8}
 .copy .ico{width:12px;height:12px}
+
+/* 토스 송금 — 토스 앱이 깔린 기기에서만 열립니다.
+   없으면 계좌번호를 복사해 주고 안내합니다(스크립트 참고). */
+.toss{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:7px 12px;
+  border-radius:20px;
+  background:#0064ff;
+  font-size:11.5px;
+  color:#fff;
+}
+.toss:hover{background:#0057e0}
+.toss .ico{width:12px;height:12px;stroke-width:1.8}
 
 /* ── 맺음 ──────────────────────────────────────────── */
 .closing-word{

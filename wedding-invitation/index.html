@@ -76,7 +76,7 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=202608131350">
+<link rel="stylesheet" href="style.css?v=202608131354">
 </head>
 <body>
 
@@ -96,6 +96,7 @@
   <symbol id="ico-phone" viewBox="0 0 24 24"><path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5L16 12l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z"/></symbol>
   <symbol id="ico-sms" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5z"/></symbol>
   <symbol id="ico-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="1.6"/><path d="M5 15H4V4h11v1"/></symbol>
+  <symbol id="ico-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-8-8-4L21 3z"/></symbol>
   <symbol id="ico-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.8 7-11a7 7 0 1 0-14 0c0 4.2 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
   <symbol id="ico-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
   <symbol id="ico-share" viewBox="0 0 24 24"><path d="M12 15V4M8.5 7.5 12 4l3.5 3.5M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/></symbol>
@@ -316,15 +317,15 @@
       <p class="acct-group-title">신랑측 계좌번호</p>
       <div class="acct">
         <div><p class="acct-who">신랑 이희우 · 카카오뱅크</p><p class="acct-no">3333071152694</p></div>
-        <button class="copy" type="button" data-copy="3333071152694"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="3333071152694"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="카카오뱅크" data-account="3333071152694"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-send"/></svg>토스</button></div>
       </div>
       <div class="acct">
         <div><p class="acct-who">아버님 이명현 · 우리은행</p><p class="acct-no">75708316857</p></div>
-        <button class="copy" type="button" data-copy="75708316857"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="75708316857"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="우리은행" data-account="75708316857"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-send"/></svg>토스</button></div>
       </div>
       <div class="acct">
         <div><p class="acct-who">어머님 손영숙 · NH농협</p><p class="acct-no">89001021456</p></div>
-        <button class="copy" type="button" data-copy="89001021456"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="89001021456"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="농협은행" data-account="89001021456"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-send"/></svg>토스</button></div>
       </div>
     </div>
 
@@ -332,15 +333,15 @@
       <p class="acct-group-title">신부측 계좌번호</p>
       <div class="acct">
         <div><p class="acct-who">신부 신우희 · 우리은행</p><p class="acct-no">1002435036296</p></div>
-        <button class="copy" type="button" data-copy="1002435036296"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="1002435036296"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="우리은행" data-account="1002435036296"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-send"/></svg>토스</button></div>
       </div>
       <div class="acct">
         <div><p class="acct-who">아버님 신정범 · NH농협</p><p class="acct-no">15312298040</p></div>
-        <button class="copy" type="button" data-copy="15312298040"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="15312298040"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="농협은행" data-account="15312298040"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-send"/></svg>토스</button></div>
       </div>
       <div class="acct">
         <div><p class="acct-who">어머님 조인숙 · KB국민</p><p class="acct-no">60570201013554</p></div>
-        <button class="copy" type="button" data-copy="60570201013554"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="60570201013554"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="국민은행" data-account="60570201013554"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-send"/></svg>토스</button></div>
       </div>
     </div>
   </section>
@@ -638,6 +639,38 @@ document.querySelectorAll("[data-map]").forEach(a => {
     if (!isMobile) return;                  // 데스크톱은 기본 링크 사용
     e.preventDefault();
     openMapApp(a.dataset.map, a.href);
+  });
+});
+
+/* ---------- 토스로 송금 ----------
+   supertoss:// 는 토스 앱이 깔린 기기에서만 열립니다.
+   PC 이거나 앱이 없으면 아무 일도 일어나지 않으므로,
+   그 경우에는 계좌번호를 복사해 주고 안내합니다.               */
+document.querySelectorAll(".toss").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const bank = btn.dataset.bank, account = btn.dataset.account;
+
+    if (!isMobile) {                       // PC 는 토스 앱이 없습니다
+      copyText(account);
+      showToast("계좌번호를 복사했습니다. 토스 송금은 휴대폰에서 열어 주세요");
+      return;
+    }
+
+    let moved = false;
+    const onHide = () => { moved = true; };
+    document.addEventListener("visibilitychange", onHide, { once:true });
+    window.addEventListener("pagehide", onHide, { once:true });
+
+    setTimeout(() => {
+      document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("pagehide", onHide);
+      if (moved || document.hidden) return;   // 토스로 전환됨
+      copyText(account);                      // 앱이 없으면 복사로 대신합니다
+      showToast("토스 앱이 없어 계좌번호를 복사했습니다");
+    }, 1100);
+
+    location.href = "supertoss://send?bank=" + encodeURIComponent(bank) +
+                    "&accountNo=" + encodeURIComponent(account);
   });
 });
 
