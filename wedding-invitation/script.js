@@ -29,6 +29,10 @@ const CONFIG = {
   shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
   shareImage: "https://heewoo0419.github.io/wedding-invitation/og-image.jpg",
 
+  // 카카오톡 카드·시스템 공유에 찍히는 제목. og:title 과 같은 문구로 맞춰 두세요.
+  shareTitle: "희우 💍 우희 결혼합니다.",
+  shareText: "2026년 10월 25일 일요일 오후 3시 · 토브헤세드",
+
   // 카카오톡 공유(미리보기 카드)에 필요한 JavaScript 키.
   //   https://developers.kakao.com → 내 애플리케이션 → 앱 키 → JavaScript 키
   //   같은 화면의 [플랫폼 > Web] 에 이 페이지 도메인도 등록해야 합니다.
@@ -560,8 +564,8 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
 
   async function fallback(){
     const data = {
-      title: CONFIG.groom + " · " + CONFIG.bride + " 결혼합니다",
-      text: "2026년 10월 25일 일요일 오후 3시 · " + CONFIG.venue,
+      title: CONFIG.shareTitle,
+      text: CONFIG.shareText,
       url: CONFIG.shareUrl
     };
     if (navigator.share) {
@@ -579,12 +583,16 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
-          title: CONFIG.groom + " · " + CONFIG.bride + " 결혼합니다",
-          description: "2026년 10월 25일 일요일 오후 3시 · " + CONFIG.venue,
+          title: CONFIG.shareTitle,
+          description: CONFIG.shareText,
           imageUrl: CONFIG.shareImage,
+          // 크기를 알려 주지 않으면 카드가 작은 형태로 접히고 버튼도 함께 가려집니다
+          imageWidth: 1200,
+          imageHeight: 630,
           link: link
         },
-        buttons: [{ title: "청첩장 보기", link: link }]
+        buttons: [{ title: "청첩장 보기", link: link }],
+        installTalk: true
       });
     } catch (e) {
       console.warn("[kakao] 전송 실패 — 도메인 등록 여부를 확인하세요.", e);
@@ -602,8 +610,8 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
 
   if (shareBtn) shareBtn.addEventListener("click", async () => {
     const data = {
-      title: CONFIG.groom + " · " + CONFIG.bride + " 결혼합니다",
-      text: "2026년 10월 25일 일요일 오후 3시 · " + CONFIG.venue,
+      title: CONFIG.shareTitle,
+      text: CONFIG.shareText,
       url: CONFIG.shareUrl
     };
     if (navigator.share) {
