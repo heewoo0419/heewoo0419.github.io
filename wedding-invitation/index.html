@@ -400,20 +400,6 @@ a{color:inherit;text-decoration:none}
 }
 .sec--mist .more{background:#ebe9e7}
 
-.btn-dark{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  width:100%;
-  margin:22px 0 0;
-  padding:15px 0;
-  border-radius:8px;
-  background:var(--ink);
-  color:#fff;
-  font-size:13.5px;
-}
-.btn-dark:hover{background:#3e3b37}
 
 /* ── 오시는 길 ─────────────────────────────────────── */
 .venue{
@@ -537,6 +523,20 @@ a{color:inherit;text-decoration:none}
   color:var(--ink-soft);
 }
 
+/* 계좌 — 접지 않고 펼쳐 둡니다 */
+.acct-group{
+  margin:14px 0 0;
+  padding:0 17px;
+  border-radius:8px;
+  background:var(--paper);
+  text-align:left;
+}
+.acct-group-title{
+  margin:0;
+  padding:16px 0 2px;
+  font-size:13.5px;
+}
+
 .acct{
   display:flex;
   align-items:center;
@@ -568,64 +568,6 @@ a{color:inherit;text-decoration:none}
 }
 .copy:hover{background:#eceae8}
 .copy .ico{width:12px;height:12px}
-
-/* ── 방명록 ────────────────────────────────────────── */
-.gb-form{margin:26px 0 0;text-align:left}
-.gb-form input,.gb-form textarea{
-  width:100%;
-  margin:0 0 8px;
-  padding:13px 14px;
-  border:1px solid var(--line);
-  border-radius:6px;
-  background:var(--paper);
-  font-family:var(--ff);
-  font-size:13px;
-  font-weight:300;
-  color:var(--ink);
-  resize:none;
-}
-.gb-form input::placeholder,.gb-form textarea::placeholder{color:var(--ink-faint)}
-.gb-form input:focus,.gb-form textarea:focus{outline:none;border-color:var(--ink-faint)}
-.gb-list{
-  margin:24px 0 0;
-  padding:0;
-  list-style:none;
-  text-align:left;
-}
-.gb-list li{
-  padding:17px 0;
-  border-top:1px solid var(--line);
-}
-.gb-list li:last-child{border-bottom:1px solid var(--line)}
-.gb-meta{
-  display:flex;
-  align-items:baseline;
-  gap:9px;
-  margin-bottom:5px;
-}
-.gb-name{font-size:13px;font-weight:400}
-.gb-date{font-size:11px;color:var(--ink-faint)}
-.gb-msg{
-  margin:0;
-  font-size:12.5px;
-  line-height:1.95;
-  color:var(--ink-soft);
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-.gb-empty{
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  font-size:12.5px;
-  color:var(--ink-faint);
-  text-align:center;
-}
-.gb-note{
-  margin:14px 0 0;
-  font-size:11px;
-  line-height:1.85;
-  color:var(--ink-faint);
-}
 
 /* ── 맺음 ──────────────────────────────────────────── */
 .closing-word{
@@ -945,64 +887,37 @@ a{color:inherit;text-decoration:none}
       전해 주시는 진심에 감사드립니다.
     </p>
 
-    <div class="acc" style="margin-top:24px">
-      <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-groom">
-        신랑측 계좌번호
-        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-plus"/></svg>
-      </button>
-      <div class="acc-panel" id="acc-groom"><div><div class="acc-inner">
-        <div class="acct">
-          <div><p class="acct-who">신랑 이희우 · 카카오뱅크</p><p class="acct-no">3333071152694</p></div>
-          <button class="copy" type="button" data-copy="3333071152694"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
-        </div>
-        <div class="acct">
-          <div><p class="acct-who">아버님 이명현 · 우리은행</p><p class="acct-no">75708316857</p></div>
-          <button class="copy" type="button" data-copy="75708316857"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
-        </div>
-        <div class="acct">
-          <div><p class="acct-who">어머님 손영숙 · NH농협</p><p class="acct-no">89001021456</p></div>
-          <button class="copy" type="button" data-copy="89001021456"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
-        </div>
-      </div></div></div>
+    <div class="acct-group">
+      <p class="acct-group-title">신랑측 계좌번호</p>
+      <div class="acct">
+        <div><p class="acct-who">신랑 이희우 · 카카오뱅크</p><p class="acct-no">3333071152694</p></div>
+        <button class="copy" type="button" data-copy="3333071152694"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">아버님 이명현 · 우리은행</p><p class="acct-no">75708316857</p></div>
+        <button class="copy" type="button" data-copy="75708316857"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">어머님 손영숙 · NH농협</p><p class="acct-no">89001021456</p></div>
+        <button class="copy" type="button" data-copy="89001021456"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+      </div>
     </div>
 
-    <div class="acc">
-      <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-bride">
-        신부측 계좌번호
-        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-plus"/></svg>
-      </button>
-      <div class="acc-panel" id="acc-bride"><div><div class="acc-inner">
-        <div class="acct">
-          <div><p class="acct-who">신부 신우희 · 우리은행</p><p class="acct-no">1002435036296</p></div>
-          <button class="copy" type="button" data-copy="1002435036296"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
-        </div>
-        <div class="acct">
-          <div><p class="acct-who">아버님 신정범 · NH농협</p><p class="acct-no">15312298040</p></div>
-          <button class="copy" type="button" data-copy="15312298040"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
-        </div>
-        <div class="acct">
-          <div><p class="acct-who">어머님 조인숙 · KB국민</p><p class="acct-no">60570201013554</p></div>
-          <button class="copy" type="button" data-copy="60570201013554"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
-        </div>
-      </div></div></div>
+    <div class="acct-group">
+      <p class="acct-group-title">신부측 계좌번호</p>
+      <div class="acct">
+        <div><p class="acct-who">신부 신우희 · 우리은행</p><p class="acct-no">1002435036296</p></div>
+        <button class="copy" type="button" data-copy="1002435036296"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">아버님 신정범 · NH농협</p><p class="acct-no">15312298040</p></div>
+        <button class="copy" type="button" data-copy="15312298040"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">어머님 조인숙 · KB국민</p><p class="acct-no">60570201013554</p></div>
+        <button class="copy" type="button" data-copy="60570201013554"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사하기</button>
+      </div>
     </div>
-  </section>
-
-  <!-- ── 방명록 ───────────────────────────────────── -->
-  <section class="sec reveal">
-    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
-    <h2 class="title">방명록</h2>
-
-    <div class="gb-form">
-      <input id="gbName" type="text" maxlength="12" placeholder="이름">
-      <textarea id="gbMsg" rows="3" maxlength="200" placeholder="따뜻한 축하의 말을 남겨 주세요"></textarea>
-      <button class="btn-dark" type="button" id="gbSend" style="margin-top:0">작성하기</button>
-    </div>
-    <ul class="gb-list" id="gbList"></ul>
-    <p class="gb-note">
-      남기신 글은 이 브라우저에만 저장됩니다.
-      다른 사람에게도 보이게 하려면 서버나 데이터베이스를 연결해 주세요.
-    </p>
   </section>
 
   <!-- ── 공유 ─────────────────────────────────────── -->
@@ -1349,51 +1264,6 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") move(-1);
   if (e.key === "ArrowRight") move(1);
 });
-
-/* ---------- 방명록 (이 브라우저에만 저장) ---------- */
-const GB_KEY = "wedding-guestbook";
-const gbList = document.getElementById("gbList");
-
-function loadEntries(){
-  try { return JSON.parse(localStorage.getItem(GB_KEY)) || []; }
-  catch { return []; }
-}
-function saveEntries(list){
-  try { localStorage.setItem(GB_KEY, JSON.stringify(list)); } catch {}
-}
-let entries = loadEntries();
-
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-}
-function renderGuestbook(){
-  gbList.innerHTML = entries.length
-    ? entries.map(e =>
-        '<li><div class="gb-meta"><span class="gb-name">' + escapeHtml(e.name) +
-        '</span><span class="gb-date">' + e.date + '</span></div><p class="gb-msg">' +
-        escapeHtml(e.msg) + '</p></li>').join("")
-    : '<li class="gb-empty">첫 번째 축하를 남겨 주세요.</li>';
-}
-document.getElementById("gbSend").addEventListener("click", () => {
-  const nameEl = document.getElementById("gbName");
-  const msgEl = document.getElementById("gbMsg");
-  const name = nameEl.value.trim(), msg = msgEl.value.trim();
-  if (!name) { showToast("이름을 입력해 주세요"); nameEl.focus(); return; }
-  if (!msg) { showToast("축하 메시지를 입력해 주세요"); msgEl.focus(); return; }
-
-  const now = new Date();
-  entries.unshift({
-    name, msg,
-    date: now.getFullYear() + "." +
-          String(now.getMonth() + 1).padStart(2, "0") + "." +
-          String(now.getDate()).padStart(2, "0")
-  });
-  saveEntries(entries);
-  nameEl.value = ""; msgEl.value = "";
-  renderGuestbook();
-  showToast("축하 메시지를 남겼습니다");
-});
-renderGuestbook();
 
 /* ---------- 일정 저장 (.ics) ---------- */
 document.getElementById("icsBtn").addEventListener("click", () => {
