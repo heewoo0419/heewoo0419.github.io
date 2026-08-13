@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>희우 · 우희 결혼합니다 (이전 디자인)</title>
+<meta name="description" content="2026년 10월 25일 일요일 오후 3시, 토브헤세드">
+
+<!-- ── 링크 공유 미리보기 (Open Graph / Twitter) ───────────────────
+     배포 주소: https://heewoo0419.github.io/wedding-invitation/
+     주소가 바뀌면 아래 URL 들과 스크립트의 CONFIG.shareUrl 을 함께 고치세요.
+     · og:url · og:image 는 반드시 절대 URL — 카카오톡·슬랙 크롤러는 상대경로를 읽지 못합니다.
+     · og-image.jpg 는 표지 사진을 1200x630 으로 자른 것입니다.
+     · 크롤러는 JS를 실행하지 않으므로 이 값들은 정적으로 박혀 있어야 합니다.
+     · 카카오톡은 미리보기를 캐시합니다. 교체 후에도 옛것이 뜨면
+       https://developers.kakao.com/tool/debugger/sharing 에서 캐시를 초기화하세요.
+-->
+<link rel="canonical" href="https://heewoo0419.github.io/wedding-invitation/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="희우 · 우희 결혼합니다">
+<meta property="og:url" content="https://heewoo0419.github.io/wedding-invitation/">
+<meta property="og:title" content="희우 💍 우희 결혼합니다.">
+<meta property="og:description" content="2026년 10월 25일 일요일 오후 3시 · 토브헤세드">
+<meta property="og:image" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
+<meta property="og:image:secure_url" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="희우 · 우희 결혼합니다 — 2026.10.25 토브헤세드">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="희우 💍 우희 결혼합니다.">
+<meta name="twitter:description" content="2026년 10월 25일 일요일 오후 3시 · 토브헤세드">
+<meta name="twitter:image" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
+<meta name="twitter:image:alt" content="희우 · 우희 결혼합니다 — 2026.10.25 토브헤세드">
+
+<!-- 상태바 색.
+     iOS Safari 는 웹페이지가 상태바를 직접 덮을 수 없습니다(시스템 영역).
+     대신 이 색을 상단 바에 칠해 주므로, 표지에서는 사진 윗부분 색으로 맞춰
+     경계가 눈에 띄지 않게 하고, 본문으로 넘어가면 흰색으로 되돌립니다(아래 스크립트).
+     #4a352d = 표지 사진 상단 평균색(#5b4036)에 어두운 오버레이를 합성한 값. -->
+<meta name="theme-color" content="#4a352d">
+
+<!-- 홈 화면에 추가한 경우에만 상태바 뒤까지 사진이 깔립니다.
+     (브라우저로 열었을 때는 적용되지 않습니다) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="희우 · 우희">
+
+<meta name="format-detection" content="telephone=no">
+
+<!-- 검색 노출 차단.
+     이 페이지에는 실명·휴대폰번호·계좌번호가 들어 있어 검색에 잡히면 그대로 노출됩니다.
+     robots.txt 로 막지 않고 meta 로 막는 이유:
+       robots.txt 의 Disallow 는 "읽지 말라"는 뜻이라 카카오톡·슬랙 크롤러까지 막혀
+       링크 공유 미리보기가 사라집니다. 아래 meta 는 "읽되 색인하지 말라"는 뜻이라
+       미리보기는 그대로 두고 검색 결과에서만 빠집니다. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- 본문 서체.
+     500 은 어디에도 쓰지 않아 뺐고, Cormorant 는 400 만 씁니다
+     (italic·500 을 함께 받으면 325KB → 74KB 차이). -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Cormorant+Garamond:wght@400&display=swap" rel="stylesheet">
+
+<!-- 표지의 두 사람 이름에만 쓰는 서체.
+     한글 폰트 전체는 1.3MB 라, 실제로 찍히는 네 글자(이·희·우·신)만 받습니다 → 3.4KB.
+     이름이 바뀌면 아래 text= 값도 함께 바꿔야 글자가 깨지지 않습니다. -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&text=%EC%9D%B4%ED%9D%AC%EC%9A%B0%EC%8B%A0&display=swap" rel="stylesheet">
+
+<!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
+<link rel="preload" href="assets/fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
+
+<link rel="stylesheet" href="style.css?v=202608131425">
+
+</head>
+<body data-share-url="https://heewoo0419.github.io/wedding-invitation/index.old.html">
+
+<!-- ── SVG 아이콘 ─────────────────────────────────── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- 섹션 머리 표식 — 하트 두 개와 반짝임 -->
+  <symbol id="orn" viewBox="0 0 78 26">
+    <path d="M12.6 20.4c-3-2.3-7.6-5.4-7.6-9.4a4.4 4.4 0 0 1 7.6-3 4.4 4.4 0 0 1 7.6 3c0 4-4.6 7.1-7.6 9.4z"/>
+    <path d="M65.4 20.4c-3-2.3-7.6-5.4-7.6-9.4a4.4 4.4 0 0 1 7.6-3 4.4 4.4 0 0 1 7.6 3c0 4-4.6 7.1-7.6 9.4z"/>
+    <path d="M27 4v6M24 7h6"/>
+    <path d="M39 11v5M36.5 13.5h5"/>
+    <path d="M51 5v5M48.5 7.5h5"/>
+    <path d="M22 17v3M20.5 18.5h3"/>
+    <path d="M56 17v3M54.5 18.5h3"/>
+  </symbol>
+
+  <symbol id="ico-phone" viewBox="0 0 24 24"><path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5L16 12l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z"/></symbol>
+  <symbol id="ico-sms" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5z"/></symbol>
+  <symbol id="ico-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="1.6"/><path d="M5 15H4V4h11v1"/></symbol>
+  <symbol id="ico-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.8 7-11a7 7 0 1 0-14 0c0 4.2 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="ico-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
+  <symbol id="ico-share" viewBox="0 0 24 24"><path d="M12 15V4M8.5 7.5 12 4l3.5 3.5M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/></symbol>
+  <symbol id="ico-link" viewBox="0 0 24 24"><path d="M10 13a4 4 0 0 0 5.7.2l2.6-2.6a4 4 0 1 0-5.7-5.7L11 6.6"/><path d="M14 11a4 4 0 0 0-5.7-.2l-2.6 2.6a4 4 0 1 0 5.7 5.7L13 17.4"/></symbol>
+  <symbol id="ico-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="1.6"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+  <symbol id="ico-car" viewBox="0 0 24 24"><path d="M5 16v2M19 16v2M4 16h16v-4l-2-4H6l-2 4z"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></symbol>
+  <symbol id="ico-bus" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="13" rx="2"/><path d="M5 10h14M8 20v-3M16 20v-3"/><circle cx="8.5" cy="14" r=".8"/><circle cx="15.5" cy="14" r=".8"/></symbol>
+  <symbol id="ico-subway" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 11h12M8 21l2-3M16 21l-2-3"/><circle cx="9.5" cy="14" r=".8"/><circle cx="14.5" cy="14" r=".8"/></symbol>  <symbol id="ico-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="ico-prev" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></symbol>
+  <!-- 카카오톡 — 말풍선. 채워서 쓰므로 stroke 를 끕니다 -->
+  <symbol id="ico-kakao" viewBox="0 0 24 24"><path d="M12 3.6c-4.7 0-8.5 2.9-8.5 6.5 0 2.3 1.6 4.4 4 5.6-.2.6-.7 2.3-.8 2.7 0 .2.1.4.3.3.3-.1 2.6-1.7 3.3-2.2.6.1 1.1.1 1.7.1 4.7 0 8.5-2.9 8.5-6.5S16.7 3.6 12 3.6z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ico-next" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+</svg>
+
+<div class="frame">
+<main>
+
+  <!-- ── 표지 ─────────────────────────────────────── -->
+  <header class="cover">
+    <div class="ph" data-label="PHOTOS / COVER.JPG">
+      <img src="assets/photos/cover.jpg" alt="희우와 우희" onerror="this.remove()">
+    </div>
+
+    <p class="cover-script">
+      <span class="l1">We are</span>
+      <span class="l2">getting</span>
+      <span class="l3">married!</span>
+    </p>
+
+    <p class="cover-names"><span>이희우</span><span>신우희</span></p>
+  </header>
+
+  <!-- ── 인사말 ───────────────────────────────────── -->
+  <section class="sec reveal">
+    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
+    <h2 class="title">초대합니다</h2>
+
+    <p class="greet-body">
+      있는 그대로 사랑하고<br>
+      서로의 존재에 감사하며 살겠습니다.<br><br>
+      변함없이 서로를 아끼는 마음으로<br>
+      두 사람이 하나가 되려 합니다.<br><br>
+      사랑과 믿음으로 맺어지는 이 자리에<br>
+      귀한 걸음으로 함께해 주세요.
+    </p>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <div class="parents">
+      <span class="fam">이명현 · 손영숙<i>의</i></span><span class="rel">아들</span><span class="who">희우</span>
+      <span class="fam">신정범 · 조인숙<i>의</i></span><span class="rel">딸</span><span class="who">우희</span>
+    </div>
+
+    <div class="acc" style="margin-top:26px">
+      <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-parents">
+        혼주에게 연락하기
+        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-plus"/></svg>
+      </button>
+      <div class="acc-panel" id="acc-parents"><div><div class="acc-inner">
+        <div class="acct">
+          <div><p class="acct-who">신랑 이희우</p><p class="acct-no">010-4330-4540</p></div>
+          <div style="display:flex;gap:6px;flex:none">
+            <a class="copy" href="tel:01043304540"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>전화</a>
+            <a class="copy" href="sms:01043304540"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sms"/></svg>문자</a>
+          </div>
+        </div>
+        <div class="acct">
+          <div><p class="acct-who">신부 신우희</p><p class="acct-no">010-9199-2479</p></div>
+          <div style="display:flex;gap:6px;flex:none">
+            <a class="copy" href="tel:01091992479"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>전화</a>
+            <a class="copy" href="sms:01091992479"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sms"/></svg>문자</a>
+          </div>
+        </div>
+        <div class="acct">
+          <div><p class="acct-who">신랑 아버지 이명현</p><p class="acct-no">010-3565-4540</p></div>
+          <div style="display:flex;gap:6px;flex:none">
+            <a class="copy" href="tel:01035654540"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>전화</a>
+            <a class="copy" href="sms:01035654540"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sms"/></svg>문자</a>
+          </div>
+        </div>
+        <div class="acct">
+          <div><p class="acct-who">신랑 어머니 손영숙</p><p class="acct-no">010-5509-4540</p></div>
+          <div style="display:flex;gap:6px;flex:none">
+            <a class="copy" href="tel:01055094540"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>전화</a>
+            <a class="copy" href="sms:01055094540"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sms"/></svg>문자</a>
+          </div>
+        </div>
+        <div class="acct">
+          <div><p class="acct-who">신부 아버지 신정범</p><p class="acct-no">010-9622-2479</p></div>
+          <div style="display:flex;gap:6px;flex:none">
+            <a class="copy" href="tel:01096222479"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>전화</a>
+            <a class="copy" href="sms:01096222479"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sms"/></svg>문자</a>
+          </div>
+        </div>
+        <div class="acct">
+          <div><p class="acct-who">신부 어머니 조인숙</p><p class="acct-no">010-3200-2479</p></div>
+          <div style="display:flex;gap:6px;flex:none">
+            <a class="copy" href="tel:01032002479"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>전화</a>
+            <a class="copy" href="sms:01032002479"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sms"/></svg>문자</a>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- ── 사진 콜라주 ──────────────────────────────── -->
+  <section class="sec reveal" style="padding-top:0">
+    <div class="collage">
+      <div class="ph c-a" data-label="COLLAGE-1"><img src="assets/photos/collage-1.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="ph c-b" data-label="COLLAGE-2"><img src="assets/photos/collage-2.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <p class="collage-cap">Sunday, 25 October, 2026</p>
+      <div class="ph c-c" data-label="COLLAGE-3"><img src="assets/photos/collage-3.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="ph c-d" data-label="COLLAGE-4"><img src="assets/photos/collage-4.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <p class="collage-foot">Groom &amp; Bride</p>
+  </section>
+
+  <!-- ── 날짜 ─────────────────────────────────────── -->
+  <section class="sec sec--mist reveal">
+    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
+    <p class="date-line">2026년 10월<b>25일</b></p>
+    <p class="date-sub">일요일 오후 3시</p>
+
+    <table class="cal" id="cal"></table>
+
+    <div class="count">
+      <div class="count-cell"><span class="count-key">DAYS</span><span class="count-val" id="cDay">—</span></div>
+      <span class="count-sep" aria-hidden="true">:</span>
+      <div class="count-cell"><span class="count-key">HOUR</span><span class="count-val" id="cHour">—</span></div>
+      <span class="count-sep" aria-hidden="true">:</span>
+      <div class="count-cell"><span class="count-key">MIN</span><span class="count-val" id="cMin">—</span></div>
+      <span class="count-sep" aria-hidden="true">:</span>
+      <div class="count-cell"><span class="count-key">SEC</span><span class="count-val" id="cSec">—</span></div>
+    </div>
+    <p class="dday" id="dday"></p>
+  </section>
+
+  <!-- ── 갤러리 ───────────────────────────────────── -->
+  <section class="sec sec--flush sec--mist reveal">
+    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
+    <h2 class="title">웨딩 갤러리</h2>
+
+    <div class="grid" id="grid"></div>
+    <button class="more" type="button" id="moreBtn">더 보기</button>
+  </section>
+
+  <!-- ── 식장 위치 ────────────────────────────────── -->
+  <section class="sec reveal">
+    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
+    <h2 class="title">식장 위치</h2>
+
+    <p class="venue">토브헤세드</p>
+    <p class="venue-sub">서울특별시 강남구 논현2동 도산대로 38길 32</p>
+    <p class="venue-sub">0507-1447-2446</p>
+
+    <div class="map" id="map" role="img" aria-label="토브헤세드 위치 지도"></div>
+
+    <div class="btn-row">
+      <a class="btn" data-map="naver" href="https://map.naver.com/p/search/%ED%86%A0%EB%B8%8C%ED%97%A4%EC%84%B8%EB%93%9C" target="_blank" rel="noopener"><img class="btn-ico" src="assets/naver-map-icon.png?v=2" alt="" width="96" height="96" loading="lazy" decoding="async">네이버 지도</a>
+      <a class="btn" data-map="kakao" href="https://map.kakao.com/link/map/%ED%86%A0%EB%B8%8C%ED%97%A4%EC%84%B8%EB%93%9C,37.5185551,127.0327655" target="_blank" rel="noopener"><img class="btn-ico" src="assets/kakao-navi-icon.png?v=2" alt="" width="96" height="96" loading="lazy" decoding="async">카카오내비</a>
+      <!-- 티맵은 PC 웹 지도가 없어 <a href> 대신 버튼입니다 (모바일은 앱, PC 는 주소 복사) -->
+      <button class="btn" type="button" data-map="tmap"><img class="btn-ico" src="assets/tmap-icon.png?v=2" alt="" width="96" height="96" loading="lazy" decoding="async">티맵</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn" type="button" data-copy="서울특별시 강남구 논현2동 도산대로 38길 32"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>주소 복사</button>
+      <a class="btn" href="tel:0507-1447-2446"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>예식장 전화</a>
+    </div>
+
+    <div class="info">
+      <div class="info-item">
+        <p class="info-head">차량으로 오시는 방법 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-car"/></svg></span></p>
+        <dl class="drive">
+          <dt>네비게이션</dt>
+          <dd>&ldquo;토브헤세드&rdquo; 또는 &ldquo;언북중학교&rdquo; 검색</dd>
+          <dt>도로명주소</dt>
+          <dd>서울특별시 강남구 논현2동 도산대로 38길 32</dd>
+          <dt>주차장 안내</dt>
+          <dd>주차요원의 안내를 받으세요.</dd>
+        </dl>
+      </div>
+      <div class="info-item">
+        <p class="info-head">지하철로 오시는 방법 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-subway"/></svg></span></p>
+        <p class="info-body info-body--inline">
+          <span class="line-badge" aria-label="7호선">7</span>학동역 10번 출구 (서울세관 방면)
+        </p>
+        <p class="info-body">셔틀버스 이용 또는 도보 5분</p>
+      </div>
+
+      <div class="info-item">
+        <p class="info-head">버스로 오시는 방법 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-bus"/></svg></span></p>
+
+        <p class="stop">언북중학교 입구 정류장 하차</p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-trunk">간선버스</span>145, 440
+        </p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-branch">지선버스</span>4212
+        </p>
+
+        <p class="stop">서울세관 정류장 하차</p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-trunk">간선버스</span>141
+        </p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-express">직행버스</span>3600
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 마음 전하실 곳 ───────────────────────────── -->
+  <section class="sec sec--mist reveal">
+    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
+    <h2 class="title">마음 전하실 곳</h2>
+    <p class="lead">
+      참석이 어려우신 분들을 위해 계좌를 안내드립니다.<br>
+      전해 주시는 진심에 감사드립니다.
+    </p>
+
+    <div class="acct-group">
+      <p class="acct-group-title">신랑측 계좌번호</p>
+      <div class="acct">
+        <div><p class="acct-who">신랑 이희우 · 카카오뱅크</p><p class="acct-no">3333071152694</p></div>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="3333071152694"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="카카오뱅크" data-account="3333071152694"><img class="toss-logo" src="assets/toss-logo.png" alt="토스" width="171" height="52"></button></div>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">아버지 이명현 · 우리은행</p><p class="acct-no">75708316857</p></div>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="75708316857"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="우리은행" data-account="75708316857"><img class="toss-logo" src="assets/toss-logo.png" alt="토스" width="171" height="52"></button></div>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">어머니 손영숙 · NH농협</p><p class="acct-no">89001021456</p></div>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="89001021456"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="농협은행" data-account="89001021456"><img class="toss-logo" src="assets/toss-logo.png" alt="토스" width="171" height="52"></button></div>
+      </div>
+    </div>
+
+    <div class="acct-group">
+      <p class="acct-group-title">신부측 계좌번호</p>
+      <div class="acct">
+        <div><p class="acct-who">신부 신우희 · 우리은행</p><p class="acct-no">1002435036296</p></div>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="1002435036296"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="우리은행" data-account="1002435036296"><img class="toss-logo" src="assets/toss-logo.png" alt="토스" width="171" height="52"></button></div>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">아버지 신정범 · NH농협</p><p class="acct-no">15312298040</p></div>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="15312298040"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="농협은행" data-account="15312298040"><img class="toss-logo" src="assets/toss-logo.png" alt="토스" width="171" height="52"></button></div>
+      </div>
+      <div class="acct">
+        <div><p class="acct-who">어머니 조인숙 · KB국민</p><p class="acct-no">60570201013554</p></div>
+        <div class="acct-btns"><button class="copy" type="button" data-copy="60570201013554"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>복사</button><button class="toss" type="button" data-bank="국민은행" data-account="60570201013554"><img class="toss-logo" src="assets/toss-logo.png" alt="토스" width="171" height="52"></button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 공유 ─────────────────────────────────────── -->
+  <section class="sec sec--mist reveal">
+    <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
+    <p class="closing-word">
+      귀한 걸음으로<br>
+      기쁨을 더해 주세요.
+    </p>
+
+    <!-- 카카오톡 공유는 미리보기 카드로 나가므로 한 줄을 다 씁니다 -->
+    <button class="btn btn--kakao" type="button" id="kakaoBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-kakao"/></svg>카카오톡으로 공유하기</button>
+
+    <div class="share-row">
+      <button class="btn" type="button" id="icsBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-calendar"/></svg>일정 저장</button>
+      <button class="btn" type="button" id="linkBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-link"/></svg>주소 복사</button>
+      <button class="btn" type="button" id="shareBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-share"/></svg>공유하기</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Heewoo &amp; Woohee
+    <span>2026 . 10 . 25</span>
+  </footer>
+
+</main>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+  <button class="lb-close" type="button" aria-label="닫기"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-close"/></svg></button>
+  <button class="lb-nav lb-prev" type="button" aria-label="이전 사진"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-prev"/></svg></button>
+  <!-- 이전·현재·다음 세 장을 나란히 두고 트랙을 밀어 넘깁니다.
+       한 장만 갈아끼우면 손가락을 따라 움직일 옆 사진이 없습니다. -->
+  <div class="lb-view">
+    <div class="lb-track" id="lbTrack">
+      <figure class="lb-slide"></figure>
+      <figure class="lb-slide"></figure>
+      <figure class="lb-slide"></figure>
+    </div>
+  </div>
+  <button class="lb-nav lb-next" type="button" aria-label="다음 사진"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-next"/></svg></button>
+  <p class="lb-count" id="lbCount"></p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js?v=2" defer></script>
+</body>
+</html>

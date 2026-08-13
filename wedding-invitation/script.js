@@ -1,12 +1,12 @@
 /* ============================================================
    희우 · 우희 청첩장 — 공통 스크립트
 
-   index.html(본 화면) 과 index.trip.html(Trip 시안) 이 이 파일 하나를
+   index.html(현재 화면) 과 index.old.html(이전 디자인) 이 이 파일 하나를
    함께 씁니다. 두 화면의 마크업이 완전히 같지는 않으므로, 각 기능은
    자기 DOM 이 있을 때만 동작합니다. 없는 화면에서는 조용히 넘어갑니다.
 
    화면별로 다른 값은 <body> 의 data-* 로 넘깁니다.
-     · 갤러리 배치   data-gallery-layout="square" 면 정사각 3열
+     · 갤러리 배치   data-gallery-layout="grid" 면 3열 한 판(더보기 없음)
      · 사진 장수     data-gallery="9"
      · 공유 주소     data-share-url="…"   (없으면 CONFIG.shareUrl)
      · 상태바 고정   data-tint-fixed      (있으면 theme-color 를 건드리지 않음)
@@ -66,10 +66,10 @@ const CONFIG = {
 /* 화면이 따로 지정한 값이 있으면 그것을 씁니다 */
 const PAGE = {
   gallery: Number(document.body.dataset.gallery) || CONFIG.gallery,
-  square: document.body.dataset.galleryLayout === "square",
+  grid: document.body.dataset.galleryLayout === "grid",
   // 공유 주소 — 화면마다 자기 주소를 내보냅니다.
-  //   본 화면: 속성이 없어 CONFIG.shareUrl(=본 화면 주소)
-  //   시안:    data-share-url="…/index.trip.html"
+  //   index.html:     속성이 없어 CONFIG.shareUrl(=대표 주소)
+  //   index.old.html: data-share-url="…/index.old.html"
   shareUrl: document.body.dataset.shareUrl || CONFIG.shareUrl
 };
 
@@ -103,7 +103,7 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
 
 /* ---------- 갤러리 ----------
    본 화면은 세로·가로가 섞인 벽돌 배치에 "더 보기"를 두고,
-   시안은 정사각 3열 한 판만 깝니다. 어느 쪽이든 타일은 .tile 이라서
+   시안은 3열 한 판만 깝니다. 어느 쪽이든 타일은 .tile 이라서
    아래 라이트박스가 그대로 집어 씁니다.                        */
 (function buildGallery(){
   const grid = document.getElementById("grid");
@@ -114,9 +114,9 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
     const no = String(i).padStart(2, "0");
     const [w, h] = CONFIG.gallerySize[i] || CONFIG.gallerySize.default;
 
-    // 정사각 배치에서는 감출 것도, 가로로 늘일 것도 없습니다
-    const hidden = (!PAGE.square && i > CONFIG.galleryVisible) ? " is-hidden" : "";
-    const wide = (!PAGE.square && w > h) ? " is-wide" : "";
+    // 3열 한 판 배치에서는 감출 것도, 가로로 늘일 것도 없습니다
+    const hidden = (!PAGE.grid && i > CONFIG.galleryVisible) ? " is-hidden" : "";
+    const wide = (!PAGE.grid && w > h) ? " is-wide" : "";
 
     html +=
       '<button class="tile' + hidden + wide + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
@@ -129,7 +129,7 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
 
   const moreBtn = document.getElementById("moreBtn");
   if (!moreBtn) return;
-  if (PAGE.square || PAGE.gallery <= CONFIG.galleryVisible) { moreBtn.remove(); return; }
+  if (PAGE.grid || PAGE.gallery <= CONFIG.galleryVisible) { moreBtn.remove(); return; }
   moreBtn.addEventListener("click", () => {
     grid.querySelectorAll(".is-hidden").forEach(el => el.classList.remove("is-hidden"));
     moreBtn.remove();
