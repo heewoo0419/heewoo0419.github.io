@@ -14,7 +14,11 @@
   font-family:"Bluekendy";
   src:url("assets/fonts/bluekendy.woff2") format("woff2");
   font-weight:400;
-  font-display:swap;
+  /* swap 이면 받아오는 사이 폴백(cursive)으로 먼저 그려져, 표지의 큰 글씨가
+     엉뚱한 손글씨로 번쩍입니다. block 은 그 동안 글자를 감췄다가 한 번에 그립니다.
+     2.9KB 서브셋을 preload 로 미리 받으므로 감춰지는 시간은 거의 없고,
+     혹시 못 받아도 3초 뒤에는 폴백으로 보여 줍니다. */
+  font-display:block;
 }
 /* ═══════════════════════════════════════════════════════════
    토큰
@@ -52,7 +56,10 @@ body{
 img{display:block;max-width:100%}
 button{font:inherit;color:inherit;letter-spacing:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--point);outline-offset:3px;border-radius:2px}
+/* 포커스 링을 쓰지 않습니다. 키보드로 조작할 때 현재 위치가 보이지 않으므로,
+   다시 켜려면 아래 한 줄을 되살리면 됩니다.
+   :focus-visible{outline:2px solid var(--point);outline-offset:3px;border-radius:2px} */
+:focus-visible{outline:none}
 
 .frame{
   max-width:430px;
