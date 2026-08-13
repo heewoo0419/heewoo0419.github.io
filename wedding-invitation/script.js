@@ -8,8 +8,9 @@
    화면별로 다른 값은 <body> 의 data-* 로 넘깁니다.
      · 갤러리 배치   data-gallery-layout="square" 면 정사각 3열
      · 사진 장수     data-gallery="9"
-     · 공유 주소     data-share-url="…"        (없으면 CONFIG.shareUrl)
-     · 표지 상태바   data-cover-tint="#0d0c0b"  (없으면 meta 기본값)
+     · 공유 주소     data-share-url="…"   (없으면 CONFIG.shareUrl)
+     · 상태바 고정   data-tint-fixed      (있으면 theme-color 를 건드리지 않음)
+     · 표지 상태바   data-cover-tint="…"  (스크롤을 따라 바꿀 때 쓰는 색)
    ============================================================ */
 
 /* ============================================================
@@ -671,16 +672,23 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
   const meta = document.querySelector('meta[name="theme-color"]');
   const cover = document.querySelector('.cover');
   if (!meta || !cover) return;
+
+  /* 아이폰 사파리는 문서를 읽는 시점의 theme-color 만 보고, 그 뒤 JS 로 바꾼 값은
+     반영하지 않습니다. 그래서 색을 하나로 두고 갈 화면은 아예 건드리지 않습니다.
+     <body data-tint-fixed> 를 두면 meta 에 적힌 값이 그대로 남습니다. */
+  if (document.body.hasAttribute("data-tint-fixed")) return;
+
   const COVER = document.body.dataset.coverTint || meta.dataset.cover || "#4a352d";
   const PAGE_TINT = "#ffffff";
-  let current = "";
+  let current = meta.getAttribute("content");
 
   // 요소 하나의 위치만 읽으므로 스크롤마다 그대로 호출해도 부담이 없습니다.
   // requestAnimationFrame 으로 묶으면 탭이 백그라운드일 때 갱신이 멈춥니다.
   function apply(){
     const r = cover.getBoundingClientRect();
-    // 표지가 화면 맨 윗줄을 지나고 있는 동안만 사진 톤
-    const next = (r.top <= 0 && r.bottom > 0) ? COVER : PAGE_TINT;
+    // 표지가 화면에 조금이라도 남아 있으면 사진 톤.
+    // top <= 0 으로 재면 맨 위에서 당겼을 때(오버스크롤) 잠깐 흰색으로 튑니다.
+    const next = (r.bottom > 0 && r.top < innerHeight) ? COVER : PAGE_TINT;
     if (next !== current) { current = next; meta.setAttribute("content", next); }
   }
   addEventListener("scroll", apply, { passive: true });

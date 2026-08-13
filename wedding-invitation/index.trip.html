@@ -21,9 +21,9 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
 
-<!-- 상태바 색. 표지 위쪽을 검정으로 덮었으므로 같은 검정으로 시작합니다.
-     본문으로 넘어가면 script.js 가 흰색으로 바꿉니다(표지 톤은 body 의
-     data-cover-tint). 사파리는 이 초기 값을 그대로 읽으므로 표준 속성만 둡니다. -->
+<!-- 상태바 색. 표지 위쪽을 검정으로 덮었으므로 같은 검정을 씁니다.
+     아이폰 사파리는 문서를 읽는 시점의 값만 보고 그 뒤 JS 변경은 반영하지 않으므로,
+     이 화면은 스크롤에 따라 바꾸지 않고 이 값으로 고정합니다(body data-tint-fixed). -->
 <meta name="theme-color" content="#0d0c0b">
 
 <!-- 홈 화면에 추가한 경우에만 상태바 뒤까지 사진이 깔립니다 -->
@@ -427,8 +427,9 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <!-- 갤러리는 정사각 3열 한 판(9장). 나머지 동작은 script.js 가 본 화면과 공유합니다 -->
-<body data-gallery="9" data-gallery-layout="square" data-cover-tint="#0d0c0b"
-      data-share-url="https://heewoo0419.github.io/wedding-invitation/index.trip.html">
+<body data-gallery="9" data-gallery-layout="square"
+      data-share-url="https://heewoo0419.github.io/wedding-invitation/index.trip.html"
+      data-tint-fixed>   <!-- 상단바는 표지 검정으로 고정 (사파리는 로드 시점 값만 읽습니다) -->
 
 <!-- 아이콘 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
