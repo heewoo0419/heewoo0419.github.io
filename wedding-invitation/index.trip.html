@@ -21,6 +21,17 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
 
+<!-- 상태바 색.
+     표지가 화면 맨 위에 걸쳐 있는 동안에는 data-cover 색, 본문으로 넘어가면 흰색으로
+     script.js 가 바꿉니다. 표지 위쪽을 검정으로 덮었으므로 같은 검정을 씁니다. -->
+<meta name="theme-color" content="#0d0c0b" data-cover="#0d0c0b">
+
+<!-- 홈 화면에 추가한 경우에만 상태바 뒤까지 사진이 깔립니다 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="희우 · 우희">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -89,22 +100,41 @@ a{color:inherit;text-decoration:none}
   position:relative;
   aspect-ratio:1/1.62;
   overflow:hidden;
-  background:#20211f;
+  background:#0d0c0b;   /* 사진 위 빈 자리 — 아래 그라데이션 시작색과 같은 검정 */
 }
+/* 사진을 조금 아래에서 시작합니다. 위에 남는 자리는 커버 배경(검정)이고,
+   그 위를 덮는 그라데이션이 검정에서 사진으로 완만하게 이어집니다. */
 .cover>img{
-  position:absolute;inset:0;z-index:0;
-  width:100%;height:100%;
+  position:absolute;left:0;right:0;bottom:0;top:7%;z-index:0;
+  width:100%;height:93%;
   object-fit:cover;
   object-position:50% 50%;
 }
-/* 사진 상단은 어두운 나무(휘도 38) — 흰 이름줄을 위해 살짝만 더 어둡게.
-   하단은 밝은 자갈(휘도 199) — 흰색으로 페이드해 어두운 스크립트가 또렷하게 얹히도록.
-   가운데(얼굴)는 건드리지 않습니다. */
+/* 위아래를 각각 상태바 색과 종이 색으로 이어 붙입니다. 가운데(얼굴)는 그대로 둡니다.
+
+   위: 맨 끝이 theme-color(#0d0c0b) 와 같은 검정이라 아이폰 상단바와 경계가 없습니다.
+   아래: 맨 끝을 --paper 와 똑같은 순백(불투명)으로 끝냅니다. 0.9 처럼 조금이라도
+        투명하게 남기면 사진이 비쳐 다음 섹션과의 경계선이 보입니다. */
 .cover::after{
   content:"";position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(180deg,rgba(20,18,16,.5) 0%,rgba(20,18,16,.12) 22%,rgba(20,18,16,0) 40%),
-    linear-gradient(0deg,rgba(250,248,245,.9) 0%,rgba(250,248,245,.74) 14%,rgba(250,248,245,.44) 28%,rgba(250,248,245,.14) 42%,rgba(250,248,245,0) 54%);
+    linear-gradient(180deg,
+      #0d0c0b 0%,
+      #0d0c0b 7%,                    /* 사진이 시작되는 지점까지는 완전한 검정 */
+      rgba(13,12,11,.82) 12%,
+      rgba(13,12,11,.56) 19%,
+      rgba(13,12,11,.34) 27%,
+      rgba(13,12,11,.16) 36%,
+      rgba(13,12,11,.05) 45%,
+      rgba(13,12,11,0) 54%),
+    linear-gradient(0deg,
+      #fff 0%,
+      #fff 4%,
+      rgba(255,255,255,.92) 12%,
+      rgba(255,255,255,.66) 24%,
+      rgba(255,255,255,.34) 38%,
+      rgba(255,255,255,.1) 50%,
+      rgba(255,255,255,0) 60%);
 }
 .cover>*{position:relative;z-index:2}   /* 사진 0 · 페이드 1 · 글자 2 */
 
@@ -123,20 +153,22 @@ a{color:inherit;text-decoration:none}
 
 .cover-body{
   position:absolute;left:0;right:0;bottom:0;
-  padding:0 var(--pad) 30px;
+  padding:0 20px 30px;   /* 스크립트를 크게 쓰려고 커버만 좌우를 조금 좁힙니다 */
 }
 /* Bluekendy 는 x-height 가 0.26em 으로 작아, 같은 pt 에서도 훨씬 작게 보입니다.
    커버 타이틀 무게를 맞추려 크게 잡았습니다. */
 .cover-script{
   font-family:var(--script);
   color:var(--ink-cover);
-  font-size:clamp(74px,24vw,102px);
-  line-height:.82;
+  /* 자간은 폰트 원래 값(0)을 씁니다. 크기는 프레임에 들어가는 선까지 —
+     430px 폭에서 "Wedding Day" 글자 폭 366 + 들여쓰기 6 = 372 (여백 안쪽 390). */
+  font-size:clamp(90px,28vw,122px);
+  line-height:.72;      /* 두 줄을 바짝 붙입니다 */
   letter-spacing:0;
-  text-shadow:0 1px 14px rgba(250,248,245,.55);   /* 밝은 바닥에서 획이 뜨도록 아주 옅은 흰 글로우 */
+  text-shadow:0 1px 14px rgba(255,255,255,.6);   /* 밝은 바닥에서 획이 뜨도록 아주 옅은 흰 글로우 */
 }
 .cover-script span{display:block}
-.cover-script span+span{margin-left:34px}
+.cover-script span+span{margin-left:6px}
 /* 레퍼런스와 같은 결 — 세리프 문장형, 스크립트와 같은 오렌지 */
 .cover-meta{
   margin-top:13px;
@@ -147,7 +179,7 @@ a{color:inherit;text-decoration:none}
   line-height:1.8;
   /* 하단이 흰색으로 페이드되므로 캡션도 어두운 잉크로 둡니다 */
   color:rgba(31,29,26,.78);
-  text-shadow:0 1px 10px rgba(250,248,245,.6);
+  text-shadow:0 1px 10px rgba(255,255,255,.7);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -387,7 +419,7 @@ a{color:inherit;text-decoration:none}
 }
 @media (max-width:360px){
   :root{--pad:20px}
-  .cover-script{font-size:50px}
+  .cover-script{font-size:26vw}   /* 320px 화면에서도 두 번째 줄이 넘치지 않게 */
   .dday{font-size:46px}
   .btn{padding:13px 3px;font-size:12px}
   .btns{gap:5px}
@@ -693,6 +725,6 @@ a{color:inherit;text-decoration:none}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="script.js" defer></script>
+<script src="script.js?v=2" defer></script>
 </body>
 </html>
