@@ -120,7 +120,7 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
 
     html +=
       '<button class="tile' + hidden + wide + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
-        '<img src="assets/photos/gallery-' + no + '.jpg" alt="" loading="lazy" decoding="async"' +
+        '<img src="assets/photos/gallery-' + no + '.jpg" alt="" loading="lazy" decoding="async" draggable="false"' +
           ' width="' + w + '" height="' + h + '"' +
           ' onerror="this.parentElement.classList.add(\'is-empty\');this.remove()">' +
       '</button>';
@@ -413,6 +413,7 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
       const img = document.createElement("img");
       img.src = source.src;
       img.alt = source.alt || "";
+      img.draggable = false;
       slide.appendChild(img);
     } else {
       // 사진을 아직 넣지 않은 자리
@@ -520,6 +521,20 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
     }
     if (dy > CLOSE && dy > Math.abs(dx) * 1.4) closeLb();
   }, { passive: true });
+})();
+
+/* ---------- 사진 저장 막기 ----------
+   웹에서 이미지는 브라우저가 이미 받아서 그린 것이라 완전히 막을 수는 없습니다.
+   개발자도구나 주소를 직접 열면 언제든 얻을 수 있습니다. 여기서는 길게 누르기·
+   우클릭·드래그처럼 평범한 경로만 닫습니다. 길게 누르기와 드래그는 CSS 에서,
+   우클릭 메뉴는 아래에서 막습니다.
+   사진에만 걸어, 계좌번호 같은 글자는 그대로 고르고 복사할 수 있게 둡니다. */
+(function guardPhotos(){
+  const isPhoto = t =>
+    t && t.tagName === "IMG" && t.closest("#grid, .lightbox, .cover, .ph");
+
+  document.addEventListener("contextmenu", e => { if (isPhoto(e.target)) e.preventDefault(); });
+  document.addEventListener("dragstart",  e => { if (isPhoto(e.target)) e.preventDefault(); });
 })();
 
 /* ---------- 일정 저장 (.ics) ---------- */

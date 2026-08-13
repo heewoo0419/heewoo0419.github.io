@@ -157,6 +157,20 @@ a{color:inherit;text-decoration:none}
   text-shadow:0 1px 10px rgba(255,255,255,.7);
 }
 
+
+/* ── 사진 저장을 막습니다 (가능한 선까지) ─────────────────────
+   웹에서 이미지는 브라우저가 이미 받아서 그린 것이라 완전히 막을 수는 없습니다.
+   길게 누르기(iOS 의 "이미지 저장")·드래그로 끌어내기·선택 같은 평범한 경로만 닫습니다.
+   우클릭 메뉴는 script.js 에서 사진에만 막습니다(텍스트 복사는 그대로 둡니다). */
+.cover>img,
+.grid img,
+.lb-slide img{
+  -webkit-touch-callout:none;
+  -webkit-user-drag:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
 /* ═══════════════════════════════════════════════════════════
    섹션 공통
    ═══════════════════════════════════════════════════════════ */
@@ -355,7 +369,7 @@ a{color:inherit;text-decoration:none}
   display:flex;align-items:center;justify-content:center;
   height:82vh;
 }
-.lb-slide img{max-width:100%;max-height:82vh;object-fit:contain;user-select:none}
+.lb-slide img{max-width:100%;max-height:82vh;object-fit:contain}
 .lb-close,.lb-nav{
   position:absolute;width:44px;height:44px;
   display:flex;align-items:center;justify-content:center;
