@@ -676,12 +676,29 @@ a{color:inherit;text-decoration:none}
   user-select:none;
 }
 .lightbox.on{display:flex}
-.lightbox figure{
-  margin:0;
+
+/* 보이는 창은 한 장 크기로 잘라 두고, 그 안에서 트랙이 움직입니다 */
+.lb-view{
   width:min(100vw - 40px, 430px);
   height:min(78vh, 620px);
+  overflow:hidden;
+}
+.lb-track{
+  display:flex;
+  height:100%;
+  will-change:transform;
+}
+.lb-slide{
+  flex:0 0 100%;
+  margin:0;
+  height:100%;
   background-size:cover;
   background-position:center;
+}
+.lb-slide img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 .lb-close,.lb-nav{
   position:absolute;

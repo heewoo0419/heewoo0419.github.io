@@ -76,7 +76,7 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="assets/fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=202608131414">
+<link rel="stylesheet" href="style.css?v=202608131425">
 </head>
 <body>
 
@@ -371,7 +371,15 @@
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="사진 크게 보기">
   <button class="lb-close" type="button" aria-label="닫기"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-close"/></svg></button>
   <button class="lb-nav lb-prev" type="button" aria-label="이전 사진"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-prev"/></svg></button>
-  <figure id="lbFigure"></figure>
+  <!-- 이전·현재·다음 세 장을 나란히 두고 트랙을 밀어 넘깁니다.
+       한 장만 갈아끼우면 손가락을 따라 움직일 옆 사진이 없습니다. -->
+  <div class="lb-view">
+    <div class="lb-track" id="lbTrack">
+      <figure class="lb-slide"></figure>
+      <figure class="lb-slide"></figure>
+      <figure class="lb-slide"></figure>
+    </div>
+  </div>
   <button class="lb-nav lb-next" type="button" aria-label="다음 사진"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-next"/></svg></button>
   <p class="lb-count" id="lbCount"></p>
 </div>
@@ -681,27 +689,44 @@ document.querySelectorAll(".acc-head").forEach(head => {
   });
 });
 
-/* ---------- 라이트박스 ---------- */
+/* ---------- 라이트박스 ----------
+   슬라이드 세 칸(이전·현재·다음)을 나란히 두고 트랙을 -100% 에 놓습니다.
+   손가락을 따라 트랙을 밀고, 놓으면 옆 칸까지 마저 밀거나 제자리로 돌립니다.
+   전환이 끝나면 인덱스를 옮기고 트랙을 소리 없이 -100% 로 되돌려,
+   몇 장을 넘겨도 늘 가운데 칸을 보고 있는 상태가 됩니다.               */
 const tiles = [...document.querySelectorAll(".tile")];
 const lightbox = document.getElementById("lightbox");
-const lbFigure = document.getElementById("lbFigure");
+const lbTrack = document.getElementById("lbTrack");
+const lbSlides = [...lbTrack.children];
 const lbCount = document.getElementById("lbCount");
-let lbIndex = 0, lastFocused = null;
+let lbIndex = 0, lastFocused = null, sliding = false;
 
-function renderLb(){
-  const source = tiles[lbIndex].querySelector("img");
-  lbFigure.innerHTML = "";
+const EASE = "transform .3s cubic-bezier(.22,.61,.36,1)";
+
+function fillSlide(slide, i){
+  const idx = (i + tiles.length) % tiles.length;
+  const source = tiles[idx].querySelector("img");
+  slide.innerHTML = "";
   if (source) {
-    lbFigure.style.background = "none";
+    slide.style.background = "none";
     const img = document.createElement("img");
     img.src = source.src;
     img.alt = source.alt || "";
-    img.style.cssText = "width:100%;height:100%;object-fit:contain";
-    lbFigure.appendChild(img);
+    slide.appendChild(img);
   } else {
     // 사진을 아직 넣지 않은 자리
-    lbFigure.style.background = "linear-gradient(150deg,#efedeb,#e4e1de 48%,#eceae7)";
+    slide.style.background = "linear-gradient(150deg,#efedeb,#e4e1de 48%,#eceae7)";
   }
+}
+function setTrack(x, animate){
+  lbTrack.style.transition = animate ? EASE : "none";
+  lbTrack.style.transform = "translate3d(" + x + ",0,0)";
+}
+function renderLb(){
+  fillSlide(lbSlides[0], lbIndex - 1);
+  fillSlide(lbSlides[1], lbIndex);
+  fillSlide(lbSlides[2], lbIndex + 1);
+  setTrack("-100%", false);
   lbCount.textContent = (lbIndex + 1) + " / " + tiles.length;
 }
 function openLb(i){
@@ -718,8 +743,20 @@ function closeLb(){
   if (lastFocused) lastFocused.focus();
 }
 function move(step){
-  lbIndex = (lbIndex + step + tiles.length) % tiles.length;
-  renderLb();
+  if (sliding || !step) return;
+  sliding = true;
+  setTrack((-100 - step * 100) + "%", true);
+
+  const done = () => {
+    lbIndex = (lbIndex + step + tiles.length) % tiles.length;
+    renderLb();            // 트랙을 다시 가운데로 (애니메이션 없이)
+    sliding = false;
+  };
+  // transitionend 가 오지 않는 경우(탭 전환 등)를 대비해 시간으로도 마무리합니다
+  let settled = false;
+  const once = () => { if (settled) return; settled = true; done(); };
+  lbTrack.addEventListener("transitionend", once, { once: true });
+  setTimeout(once, 360);
 }
 tiles.forEach((t, i) => t.addEventListener("click", () => openLb(i)));
 lightbox.querySelector(".lb-close").addEventListener("click", closeLb);
@@ -733,31 +770,54 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight") move(1);
 });
 
-/* 스와이프 — 옆으로 밀면 사진 이동, 아래로 밀면 닫기.
-   손가락이 둘 이상이면(핀치 확대) 건드리지 않습니다. */
+/* 스와이프 — 손가락을 따라 사진이 움직이고, 놓으면 넘어가거나 제자리로.
+   아래로 크게 내리면 닫습니다. 손가락이 둘 이상이면(핀치 확대) 건드리지 않습니다. */
 (function swipe(){
-  const MOVE = 50;    // 사진을 넘길 최소 거리(px)
-  const CLOSE = 90;   // 닫을 최소 거리(px)
-  let x0 = 0, y0 = 0, t0 = 0, valid = false;
+  const LOCK = 8;      // 이만큼 움직인 방향으로 가로/세로를 정합니다
+  const CLOSE = 90;    // 닫을 최소 거리(px)
+  const FLICK = 0.5;   // 이 속도(px/ms) 이상이면 짧게 튕겨도 넘깁니다
+
+  let x0 = 0, y0 = 0, t0 = 0;
+  let active = false, axis = "", width = 0;
 
   lightbox.addEventListener("touchstart", e => {
-    valid = e.touches.length === 1;
-    if (!valid) return;
+    if (e.touches.length !== 1 || sliding) { active = false; return; }
     const t = e.changedTouches[0];
     x0 = t.clientX; y0 = t.clientY; t0 = Date.now();
+    active = true; axis = "";
+    width = lbTrack.getBoundingClientRect().width || 1;
+  }, { passive: true });
+
+  lightbox.addEventListener("touchmove", e => {
+    if (!active || e.touches.length !== 1) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - x0, dy = t.clientY - y0;
+
+    if (!axis) {
+      if (Math.abs(dx) < LOCK && Math.abs(dy) < LOCK) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+    }
+    if (axis !== "x") return;
+
+    // 양 끝에서도 순환하므로 저항 없이 그대로 따라갑니다
+    setTrack("calc(-100% + " + dx + "px)", false);
   }, { passive: true });
 
   lightbox.addEventListener("touchend", e => {
-    if (!valid || e.touches.length) return;
+    if (!active || e.touches.length) return;
+    active = false;
+
     const t = e.changedTouches[0];
     const dx = t.clientX - x0, dy = t.clientY - y0;
-    if (Date.now() - t0 > 700) return;              // 천천히 끈 것은 스와이프로 보지 않음
+    const speed = Math.abs(dx) / Math.max(Date.now() - t0, 1);
 
-    if (Math.abs(dx) > MOVE && Math.abs(dx) > Math.abs(dy) * 1.4) {
-      move(dx < 0 ? 1 : -1);                        // 왼쪽으로 밀면 다음 장
-    } else if (dy > CLOSE && dy > Math.abs(dx) * 1.4) {
-      closeLb();                                    // 아래로 내리면 닫기
+    if (axis === "x") {
+      // 절반을 넘겼거나 빠르게 튕겼으면 넘기고, 아니면 제자리로
+      if (Math.abs(dx) > width * 0.28 || speed > FLICK) move(dx < 0 ? 1 : -1);
+      else setTrack("-100%", true);
+      return;
     }
+    if (dy > CLOSE && dy > Math.abs(dx) * 1.4) closeLb();
   }, { passive: true });
 })();
 
