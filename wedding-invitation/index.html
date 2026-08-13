@@ -78,32 +78,8 @@
 
 <link rel="stylesheet" href="style.css?v=202608131425">
 
-<!-- ── 두 화면으로 갈라 보내기 ─────────────────────────────────
-     ?ab=1 로 들어올 때만 동작합니다. 그냥 이 주소로 온 분은 늘 이 화면을 봅니다.
-     · 한 사람에게는 늘 같은 화면이 보이도록 고른 값을 저장합니다
-     · ?v=main / ?v=trip 으로 직접 지정할 수 있습니다
-     · 렌더 전에 정해져야 화면이 깜빡이지 않으므로, 이 몇 줄만 여기서 바로 실행합니다
-       (나머지 스크립트는 모두 script.js 에 있습니다) -->
-<script>
-(function route(){
-  var forced = (location.search.match(/[?&]v=(main|trip)/) || [])[1];
-  if (!forced && !/[?&]ab=1/.test(location.search)) return;
-
-  var KEY = "wedding-variant", pick;
-  try {
-    pick = forced || localStorage.getItem(KEY);
-    if (pick !== "main" && pick !== "trip") pick = Math.random() < 0.5 ? "main" : "trip";
-    localStorage.setItem(KEY, pick);
-  } catch (e) {
-    pick = forced || (Math.random() < 0.5 ? "main" : "trip");   // 사생활 보호 모드
-  }
-  // replace 로 넘겨야 뒤로 가기가 이 주소에 걸리지 않습니다
-  if (pick === "trip") location.replace("index.trip.html");
-})();
-</script>
 </head>
-<!-- 공유는 분기 입구로 내보냅니다 (본 화면만 보내려면 이 속성을 지우세요) -->
-<body data-share-url="https://heewoo0419.github.io/wedding-invitation/?ab=1">
+<body>
 
 <!-- ── SVG 아이콘 ─────────────────────────────────── -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">

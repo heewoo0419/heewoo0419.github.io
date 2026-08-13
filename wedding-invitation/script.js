@@ -64,8 +64,9 @@ const CONFIG = {
 const PAGE = {
   gallery: Number(document.body.dataset.gallery) || CONFIG.gallery,
   square: document.body.dataset.galleryLayout === "square",
-  // 공유 주소 — 지금은 두 화면 모두 ab.html(분기 입구)을 내보냅니다.
-  // 한 디자인으로 정해지면 각 html 의 data-share-url 만 고치면 됩니다.
+  // 공유 주소 — 화면마다 자기 주소를 내보냅니다.
+  //   본 화면: 속성이 없어 CONFIG.shareUrl(=본 화면 주소)
+  //   시안:    data-share-url="…/index.trip.html"
   shareUrl: document.body.dataset.shareUrl || CONFIG.shareUrl
 };
 
