@@ -418,9 +418,14 @@ a{color:inherit;text-decoration:none}
 .sec--mist .btn{background:var(--paper)}
 .btn:hover{background:var(--mist)}
 .btn .ico{width:14px;height:14px;flex:none}
-/* 지도·내비 브랜드 아이콘 — 모두 16px 박스에 담고, 비율은 그대로 둔다 */
-.btn .btn-ico{width:16px;height:16px;flex:none;object-fit:contain}
-.btn .btn-ico--app{object-fit:cover;border-radius:4px}   /* 배경이 있는 앱 아이콘은 박스를 꽉 채운다 */
+/* 지도·내비 아이콘 — App Store 앱 아이콘을 그대로 씁니다.
+   흰 배경 아이콘(네이버·티맵)이 흰 버튼에 묻히지 않게 아주 옅은 테두리를 둡니다. */
+.btn .btn-ico{
+  width:18px;height:18px;flex:none;   /* 앱 아이콘은 자체 여백이 있어 조금 크게 잡습니다 */
+  border-radius:4px;
+  object-fit:cover;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.07);
+}
 
 .ico{
   width:16px;height:16px;
@@ -648,8 +653,19 @@ a{color:inherit;text-decoration:none}
 .share-row{
   display:flex;
   gap:7px;
-  margin:26px 0 0;
+  margin:7px 0 0;
 }
+/* 카카오톡 공유 — 브랜드 색(노란 바탕에 검정 글자).
+   위쪽 .sec--mist .btn 과 특이성을 맞추려 클래스를 둘 겹칩니다. */
+.btn.btn--kakao{
+  width:100%;
+  margin:26px 0 0;
+  border-color:#fee500;
+  background:#fee500;
+  color:#191600;
+}
+.btn.btn--kakao:hover{background:#f5dd00;border-color:#f5dd00}
+.btn.btn--kakao .ico{width:16px;height:16px}
 .footer{
   /* 홈 화면에서 실행하면 아래쪽 홈 인디케이터에 글자가 가리므로 그만큼 더 띄웁니다 */
   padding:36px var(--pad) calc(48px + env(safe-area-inset-bottom));
