@@ -26,7 +26,9 @@ const CONFIG = {
   // 같은 Application 의 "Web 서비스 URL" 에 이 페이지의 도메인도 등록해야 합니다.
   naverKeyId: "8ecuewium6",
 
-  shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
+  // 공유로 나가는 주소는 ab.html — 받는 분을 본 화면과 Trip 시안 중 하나로 갈라 보냅니다.
+  // 한 디자인만 보내고 싶어지면 이 값을 ".../wedding-invitation/" 으로 되돌리면 됩니다.
+  shareUrl: "https://heewoo0419.github.io/wedding-invitation/ab.html",
   shareImage: "https://heewoo0419.github.io/wedding-invitation/og-image.jpg",
 
   // 카카오톡 카드·시스템 공유에 찍히는 제목. og:title 과 같은 문구로 맞춰 두세요.
