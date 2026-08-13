@@ -62,7 +62,19 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Dodum&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<!-- 본문 서체.
+     500 은 어디에도 쓰지 않아 뺐고, Cormorant 는 400 만 씁니다
+     (italic·500 을 함께 받으면 325KB → 74KB 차이). -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Cormorant+Garamond:wght@400&display=swap" rel="stylesheet">
+
+<!-- 표지의 두 사람 이름에만 쓰는 서체.
+     한글 폰트 전체는 1.3MB 라, 실제로 찍히는 네 글자(이·희·우·신)만 받습니다 → 3.4KB.
+     이름이 바뀌면 아래 text= 값도 함께 바꿔야 글자가 깨지지 않습니다. -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&text=%EC%9D%B4%ED%9D%AC%EC%9A%B0%EC%8B%A0&display=swap" rel="stylesheet">
+
+<!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
+<link rel="preload" href="fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
 
 <link rel="stylesheet" href="style.css?v=202608131334">
 </head>
