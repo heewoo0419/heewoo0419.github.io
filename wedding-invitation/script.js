@@ -37,9 +37,11 @@ const CONFIG = {
   shareTitle: "희우 💍 우희 결혼합니다.",
   shareText: "2026년 10월 25일 일요일 오후 3시 · 토브헤세드",
 
-  // 카카오톡 카드 전용. 카드는 2:1 이 잘 맞아 따로 뽑았습니다.
-  // 날짜·장소는 아래 itemContent 에 따로 들어가므로 설명은 인사말로 둡니다.
-  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/kakao-message-cover.jpg",
+  // 카카오톡 카드 전용. 카드의 그림 자리가 가로형이라 2:1 로 맞췄습니다
+  // (세로로 두면 위아래가 잘립니다).
+  // 카카오는 이 주소로 받은 그림을 자기 서버에 캐시합니다. 그림을 갈 때는
+  // 파일명을 함께 바꿔야 새 그림이 나갑니다.
+  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/kakao-share-cover.jpg",
   kakaoDesc: "귀한 걸음으로 함께해 주세요.",
 
   // 카카오톡 공유(미리보기 카드)에 필요한 JavaScript 키.
