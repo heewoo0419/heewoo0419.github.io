@@ -35,7 +35,20 @@
 <meta name="twitter:image" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
 <meta name="twitter:image:alt" content="희우 · 우희 결혼합니다 — 2026.10.25 토브헤세드">
 
-<meta name="theme-color" content="#ffffff">
+<!-- 상태바 색.
+     iOS Safari 는 웹페이지가 상태바를 직접 덮을 수 없습니다(시스템 영역).
+     대신 이 색을 상단 바에 칠해 주므로, 표지에서는 사진 윗부분 색으로 맞춰
+     경계가 눈에 띄지 않게 하고, 본문으로 넘어가면 흰색으로 되돌립니다(아래 스크립트).
+     #4a352d = 표지 사진 상단 평균색(#5b4036)에 어두운 오버레이를 합성한 값. -->
+<meta name="theme-color" content="#4a352d">
+
+<!-- 홈 화면에 추가한 경우에만 상태바 뒤까지 사진이 깔립니다.
+     (브라우저로 열었을 때는 적용되지 않습니다) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="희우 · 우희">
+
 <meta name="format-detection" content="telephone=no">
 
 <!-- 검색 노출 차단.
@@ -49,625 +62,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Dodum&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
-<style>
-/* 표지 손글씨 — Rockville Solid (Ardian Nuvianto, 2019)
-   임베딩 제한 없음(fsType 0). 원본 .otf(253KB)를 표지 문구에 필요한
-   기본 라틴(U+0020-007E)만 남겨 woff2 로 줄인 파일입니다(84KB).
-   다시 만들려면:
-     python3 -m fontTools.subset "fonts/Rockville Solid.otf" \
-       --unicodes=U+0020-007E --layout-features='*' \
-       --flavor=woff2 --output-file=fonts/rockville-solid.woff2   */
-@font-face{
-  font-family:"Rockville Solid";
-  src:url("fonts/rockville-solid.woff2") format("woff2");
-  font-display:swap;
-}
-
-/* ============================================================
-   토큰
-   ============================================================ */
-:root{
-  --paper:#ffffff;
-  --mist:#f5f4f3;
-  --ink:#2b2926;
-  --ink-soft:#7d7873;
-  --ink-faint:#adaaa6;
-  --line:#e9e7e5;
-  --red:#e0483c;      /* 일요일 · D-day 숫자 */
-  --pop:#ffffff;      /* 표지 손글씨와 이름 — 사진 톤에 맞춰 바꾸셔도 됩니다 */
-
-  --ff:"Noto Sans KR", sans-serif;
-  --ff-en:"Cormorant Garamond", serif;
-  --ff-script:"Rockville Solid", cursive;
-
-  --w:430px;
-  --pad:28px;
-}
-
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;
-  background:#e8e6e4;
-  color:var(--ink);
-  font-family:var(--ff);
-  font-weight:300;
-  line-height:1.75;
-  -webkit-font-smoothing:antialiased;
-}
-img{display:block;max-width:100%}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}
-
-.frame{
-  max-width:var(--w);
-  margin:0 auto;
-  background:var(--paper);
-  overflow:hidden;
-}
-
-/* ── 섹션 공통 ───────────────────────────────────────── */
-.sec{
-  padding:74px var(--pad);
-  text-align:center;
-}
-.sec--mist{background:var(--mist)}
-.sec--flush{padding-left:0;padding-right:0}
-
-.title{
-  margin:14px 0 0;
-  font-size:17px;
-  font-weight:400;
-  letter-spacing:.01em;
-}
-.lead{
-  margin:18px 0 0;
-  font-size:13px;
-  line-height:2.05;
-  color:var(--ink-soft);
-}
-
-/* 하트 두 개와 반짝임 — 섹션 머리마다 반복되는 표식 */
-.orn{
-  display:block;
-  width:78px;
-  height:26px;
-  margin:0 auto;
-  stroke:var(--ink-faint);
-  stroke-width:1.1;
-  fill:none;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-/* ── 사진 자리 ─────────────────────────────────────────
-   photos/ 아래에 같은 이름으로 넣으면 그대로 나옵니다.
-   파일이 없으면 img 가 스스로 사라지고 아래 질감만 남습니다. */
-.ph{
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(150deg,#efedeb 0%,#e4e1de 48%,#eceae7 100%);
-}
-.ph::after{
-  content:attr(data-label);
-  position:absolute;
-  left:0;right:0;bottom:12px;
-  text-align:center;
-  font-size:9px;
-  font-weight:300;
-  letter-spacing:.16em;
-  color:var(--ink-faint);
-}
-.ph>img{
-  position:absolute;
-  inset:0;
-  z-index:2;
-  width:100%;height:100%;
-  object-fit:cover;
-}
-
-/* ── 표지 ──────────────────────────────────────────── */
-/* 표지 비율은 메인 사진에 맞춰 둡니다. 사진을 바꾸면 이 값도 함께 맞추세요. */
-.cover{
-  position:relative;
-  aspect-ratio:2/3;
-  min-height:480px;
-  isolation:isolate;
-  container-type:inline-size;   /* 손글씨 크기를 표지 폭에 비례시키기 위해 */
-}
-.cover .ph{position:absolute;inset:0;z-index:-2}
-.cover .ph::after{bottom:auto;top:46%;color:#cbc7c3}
-.cover::before{
-  content:"";
-  position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(
-    to bottom,
-    rgba(24,22,20,.26) 0%,
-    rgba(24,22,20,.04) 40%,
-    rgba(24,22,20,.34) 100%);
-}
-
-/* 손글씨는 사진 위를 대각선으로 흐릅니다 */
-.cover-script{
-  margin:0;
-  font-family:var(--ff-script);
-  color:var(--pop);
-  line-height:1;
-  text-shadow:0 2px 18px rgba(0,0,0,.28);
-}
-/* 크기·위치는 시안의 표지를 실측해서 맞췄습니다 (표지 폭·높이 대비 비율).
-   "We are getting" 블록 = 왼쪽 5.8% / 위 3.4% / 폭 63%
-   "married!"        = 왼쪽 7.9% / 위 58.6% / 폭 86.8%
-   cqw 는 표지 폭 기준 단위라 화면이 좁아져도 비율이 그대로 유지됩니다. */
-.cover-script span{position:absolute;display:block;white-space:nowrap;transform-origin:left center}
-.cover-script .l1{top:8.1%;left:7.2%;font-size:26.0cqw;transform:rotate(-7deg)}
-.cover-script .l2{top:20.5%;left:5.9%;font-size:27.0cqw;transform:rotate(-9deg)}
-.cover-script .l3{top:66.3%;left:9.9%;font-size:30.8cqw;transform:rotate(-8deg)}
-
-.cover-names{
-  position:absolute;
-  left:var(--pad);right:var(--pad);bottom:26px;
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-  letter-spacing:.06em;
-  color:var(--pop);
-  text-shadow:0 1px 12px rgba(0,0,0,.42);
-}
-
-/* ── 인사말 ────────────────────────────────────────── */
-.greet-body{
-  margin:20px 0 0;
-  font-size:13px;
-  line-height:2.15;
-  color:var(--ink-soft);
-}
-.divider{
-  width:1px;
-  height:44px;
-  margin:34px auto;
-  background:var(--line);
-}
-.parents{
-  margin:0;
-  font-size:13px;
-  line-height:2.2;
-}
-.parents .rel{color:var(--ink-faint);font-size:11.5px;margin:0 6px}
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin:30px 0 0;
-  padding:12px 28px;
-  border-radius:26px;
-  background:var(--mist);
-  font-size:13px;
-  color:var(--ink-soft);
-}
-.sec--mist .pill{background:#ebe9e7}
-.pill:hover{background:#eceae8}
-
-/* ── 사진 콜라주 ───────────────────────────────────── */
-.collage{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  column-gap:9px;
-  row-gap:12px;
-  margin:36px 0 0;
-}
-.c-a{grid-column:1/7;grid-row:1/3;aspect-ratio:144/223}
-.c-b{grid-column:8/13;grid-row:1;aspect-ratio:95/112;margin-top:20px}
-.c-c{grid-column:9/13;grid-row:2;aspect-ratio:97/112;align-self:end}
-.c-d{grid-column:2/13;grid-row:3;aspect-ratio:248/110}
-.collage-cap{
-  grid-column:1/8;
-  grid-row:2;
-  align-self:end;
-  margin:0;
-  font-family:var(--ff-en);
-  font-size:11px;
-  text-align:left;
-  color:var(--ink-soft);
-}
-.collage-foot{
-  margin:16px 0 0;
-  font-family:var(--ff-en);
-  font-size:13px;
-  letter-spacing:.08em;
-  color:var(--ink);
-}
-
-/* ── 날짜 ──────────────────────────────────────────── */
-.date-line{
-  margin:14px 0 0;
-  font-size:21px;
-  font-weight:400;
-  letter-spacing:.01em;
-}
-.date-line b{font-weight:400;margin-left:6px}
-.date-sub{
-  display:inline-block;
-  margin:8px 0 0;
-  padding-bottom:2px;
-  border-bottom:1px solid var(--line);
-  font-size:13px;
-  color:var(--ink-soft);
-}
-
-.cal{
-  width:100%;
-  margin:26px 0 0;
-  border-collapse:collapse;
-}
-.cal th{
-  padding:0 0 12px;
-  font-size:12px;
-  font-weight:400;
-  color:var(--ink-soft);
-}
-.cal th.sun,.cal td.sun{color:var(--red)}
-.cal td{
-  padding:6px 0;
-  font-size:13px;
-}
-.cal td.out{color:var(--ink-faint)}
-.cal td.out.sun{color:#eba49e}
-.cal td span{
-  display:inline-flex;
-  align-items:center;justify-content:center;
-  width:28px;height:28px;
-  border-radius:50%;
-}
-.cal td.mark span{
-  background:var(--ink);
-  color:#fff;
-}
-
-.count{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  margin:28px 0 0;
-}
-.count-cell{
-  flex:1;
-  max-width:62px;
-  padding:8px 0 10px;
-  border-radius:6px;
-  background:#ebe9e7;
-}
-.sec--mist .count-cell{background:#e7e5e2}
-.count-key{
-  display:block;
-  font-size:8.5px;
-  letter-spacing:.12em;
-  color:var(--ink-soft);
-}
-.count-val{
-  display:block;
-  margin-top:1px;
-  font-size:18px;
-  font-weight:400;
-  font-variant-numeric:tabular-nums;
-}
-.count-sep{color:var(--ink-faint);font-size:13px}
-.dday{
-  margin:18px 0 0;
-  font-size:13px;
-  color:var(--ink-soft);
-}
-.dday b{font-weight:400;color:var(--red)}
-
-/* ── 갤러리 ────────────────────────────────────────── */
-.grid{
-  columns:2;
-  column-gap:4px;
-  margin:30px 0 0;
-  padding:0 4px;
-}
-.tile{
-  display:block;
-  width:100%;
-  margin:0 0 4px;
-  padding:0;
-  break-inside:avoid;
-}
-/* 사진이 아직 없을 때만 이 비율로 자리를 잡습니다 */
-.tile:nth-child(4n+1){aspect-ratio:3/4}
-.tile:nth-child(4n+2){aspect-ratio:1/1}
-.tile:nth-child(4n+3){aspect-ratio:1/1}
-.tile:nth-child(4n+4){aspect-ratio:3/4}
-.tile.is-hidden{display:none}
-
-/* 사진이 실제로 들어오면 비율 강제를 풀어 원본 그대로 보여줍니다.
-   가로·세로가 섞여 있어도 잘리지 않고, 매스너리도 자연스럽게 채워집니다. */
-.tile.is-loaded{aspect-ratio:auto}
-.tile.is-loaded::after{display:none}
-.tile.is-loaded>img{position:static;height:auto}
-.more{
-  width:calc(100% - var(--pad) * 2);
-  margin:18px var(--pad) 0;
-  padding:13px 0;
-  border-radius:6px;
-  background:var(--mist);
-  font-size:13px;
-  color:var(--ink-soft);
-}
-.sec--mist .more{background:#ebe9e7}
-
-
-/* ── 오시는 길 ─────────────────────────────────────── */
-.venue{
-  margin:14px 0 0;
-  font-size:15px;
-  font-weight:400;
-}
-.venue-sub{
-  margin:5px 0 0;
-  font-size:13px;
-  color:var(--ink-soft);
-}
-.map{
-  width:100%;
-  height:240px;
-  margin:22px 0 0;
-  border-radius:8px;
-  background:linear-gradient(150deg,#efedeb 0%,#e4e1de 48%,#eceae7 100%);
-}
-.map.loaded{background:none}
-.btn-row{
-  display:flex;
-  gap:7px;
-  margin:16px 0 0;
-}
-.btn{
-  flex:1;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  padding:12px 6px;
-  border:1px solid var(--line);
-  border-radius:6px;
-  background:var(--paper);
-  font-size:12.5px;
-  white-space:nowrap;
-}
-.sec--mist .btn{background:var(--paper)}
-.btn:hover{background:var(--mist)}
-.btn .ico{width:14px;height:14px;flex:none}
-
-.ico{
-  width:16px;height:16px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.5;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-/* 교통 안내 — 제목 옆 배지, 그 아래 본문 */
-.info{margin:30px 0 0;text-align:left}
-.info-item{
-  padding:20px 0;
-  border-top:1px solid var(--line);
-}
-.info-item:last-child{border-bottom:1px solid var(--line)}
-.info-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:0 0 10px;
-  font-size:13.5px;
-}
-.info-badge{
-  display:inline-flex;
-  align-items:center;justify-content:center;
-  width:26px;height:26px;
-  border-radius:50%;
-  background:var(--mist);
-  color:var(--ink-soft);
-}
-.sec--mist .info-badge{background:#ebe9e7}
-.info-badge .ico{width:14px;height:14px}
-.info-body{
-  margin:0;
-  font-size:12.5px;
-  line-height:2;
-  color:var(--ink-soft);
-}
-
-/* ── 아코디언 ──────────────────────────────────────── */
-.acc{
-  margin:9px 0 0;
-  border-radius:8px;
-  background:var(--mist);
-  overflow:hidden;
-  text-align:left;
-}
-.sec--mist .acc{background:#ebe9e7}
-.acc-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  width:100%;
-  padding:15px 17px;
-  font-size:13.5px;
-}
-.acc-head .mark{
-  width:13px;height:13px;
-  flex:none;
-  fill:none;stroke:var(--ink-soft);stroke-width:1.6;stroke-linecap:round;
-  transition:transform .3s ease;
-}
-.acc.open .acc-head .mark{transform:rotate(45deg)}
-.acc-panel{
-  display:grid;
-  grid-template-rows:0fr;
-  transition:grid-template-rows .34s ease;
-}
-.acc.open .acc-panel{grid-template-rows:1fr}
-.acc-panel>div{overflow:hidden}
-.acc-inner{padding:0 17px 4px;background:var(--paper)}
-.sec--mist .acc-inner{background:var(--paper)}
-.acc-text{
-  margin:0;
-  padding:15px 0;
-  font-size:12.5px;
-  line-height:2;
-  color:var(--ink-soft);
-}
-
-/* 계좌 — 접지 않고 펼쳐 둡니다 */
-.acct-group{
-  margin:14px 0 0;
-  padding:0 17px;
-  border-radius:8px;
-  background:var(--paper);
-  text-align:left;
-}
-.acct-group-title{
-  margin:0;
-  padding:16px 0 2px;
-  font-size:13.5px;
-}
-
-.acct{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:14px 0;
-  border-bottom:1px solid var(--line);
-}
-.acct:last-child{border-bottom:0}
-.acct-who{
-  margin:0;
-  font-size:12px;
-  color:var(--ink-soft);
-}
-.acct-no{
-  margin:2px 0 0;
-  font-size:13.5px;
-}
-.copy{
-  flex:none;
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  padding:7px 12px;
-  border-radius:20px;
-  background:var(--mist);
-  font-size:11.5px;
-  color:var(--ink-soft);
-}
-.copy:hover{background:#eceae8}
-.copy .ico{width:12px;height:12px}
-
-/* ── 맺음 ──────────────────────────────────────────── */
-.closing-word{
-  margin:16px 0 0;
-  font-size:14px;
-  line-height:2.15;
-  color:var(--ink-soft);
-}
-.share-row{
-  display:flex;
-  gap:7px;
-  margin:26px 0 0;
-}
-.footer{
-  padding:36px var(--pad) 48px;
-  text-align:center;
-  background:var(--mist);
-  font-family:var(--ff-en);
-  font-size:12px;
-  letter-spacing:.22em;
-  color:var(--ink-faint);
-}
-.footer span{
-  display:block;
-  margin-top:7px;
-  font-size:11px;
-  letter-spacing:.16em;
-}
-
-/* ── 라이트박스 ────────────────────────────────────── */
-.lightbox{
-  position:fixed;inset:0;z-index:80;
-  display:none;
-  align-items:center;justify-content:center;
-  background:rgba(18,17,16,.95);
-}
-.lightbox.on{display:flex}
-.lightbox figure{
-  margin:0;
-  width:min(100vw - 40px, 430px);
-  height:min(78vh, 620px);
-  background-size:cover;
-  background-position:center;
-}
-.lb-close,.lb-nav{
-  position:absolute;
-  display:inline-flex;
-  align-items:center;justify-content:center;
-  width:44px;height:44px;
-  color:rgba(255,255,255,.9);
-}
-.lb-close{top:14px;right:12px}
-.lb-prev{left:6px;top:50%;transform:translateY(-50%)}
-.lb-next{right:6px;top:50%;transform:translateY(-50%)}
-.lb-count{
-  position:absolute;
-  bottom:24px;left:0;right:0;
-  text-align:center;
-  font-family:var(--ff-en);
-  font-size:12px;
-  letter-spacing:.18em;
-  color:rgba(255,255,255,.72);
-}
-
-/* ── 토스트 ────────────────────────────────────────── */
-.toast{
-  position:fixed;
-  left:50%;bottom:32px;
-  z-index:90;
-  padding:11px 20px;
-  border-radius:24px;
-  background:rgba(28,26,24,.94);
-  color:#fff;
-  font-size:12.5px;
-  white-space:nowrap;
-  opacity:0;
-  transform:translate(-50%,10px);
-  pointer-events:none;
-  transition:opacity .25s ease, transform .25s ease;
-}
-.toast.on{opacity:1;transform:translate(-50%,0)}
-
-/* ── 스크롤 등장 ───────────────────────────────────── */
-.reveal{
-  opacity:0;
-  transform:translateY(16px);
-  transition:opacity .9s ease, transform .9s ease;
-}
-.reveal.in{opacity:1;transform:none}
-
-@media (prefers-reduced-motion: reduce){
-  .reveal{opacity:1;transform:none;transition:none}
-  *{transition-duration:.01ms !important}
-}
-
-@media (max-width:360px){
-  :root{--pad:20px}
-  .date-line{font-size:19px}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -694,8 +91,7 @@ a{color:inherit;text-decoration:none}
   <symbol id="ico-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="1.6"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
   <symbol id="ico-car" viewBox="0 0 24 24"><path d="M5 16v2M19 16v2M4 16h16v-4l-2-4H6l-2 4z"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></symbol>
   <symbol id="ico-bus" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="13" rx="2"/><path d="M5 10h14M8 20v-3M16 20v-3"/><circle cx="8.5" cy="14" r=".8"/><circle cx="15.5" cy="14" r=".8"/></symbol>
-  <symbol id="ico-subway" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 11h12M8 21l2-3M16 21l-2-3"/><circle cx="9.5" cy="14" r=".8"/><circle cx="14.5" cy="14" r=".8"/></symbol>
-  <symbol id="ico-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="ico-subway" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 11h12M8 21l2-3M16 21l-2-3"/><circle cx="9.5" cy="14" r=".8"/><circle cx="14.5" cy="14" r=".8"/></symbol>  <symbol id="ico-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="ico-prev" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></symbol>
   <symbol id="ico-next" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
 </svg>
@@ -734,10 +130,10 @@ a{color:inherit;text-decoration:none}
 
     <div class="divider" aria-hidden="true"></div>
 
-    <p class="parents">
-      이명현 · 손영숙<span class="rel">의 아들</span>희우<br>
-      신정범 · 조인숙<span class="rel">의 딸</span>우희
-    </p>
+    <div class="parents">
+      <span class="fam">이명현 · 손영숙<i>의</i></span><span class="rel">아들</span><span class="who">희우</span>
+      <span class="fam">신정범 · 조인숙<i>의</i></span><span class="rel">딸</span><span class="who">우희</span>
+    </div>
 
     <div class="acc" style="margin-top:26px">
       <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-parents">
@@ -839,7 +235,7 @@ a{color:inherit;text-decoration:none}
 
     <p class="venue">토브헤세드</p>
     <p class="venue-sub">서울 강남구 논현동 72-8</p>
-    <p class="venue-sub">02-516-2300</p>
+    <p class="venue-sub">0507-1447-2446</p>
 
     <div class="map" id="map" role="img" aria-label="토브헤세드 위치 지도"></div>
 
@@ -849,32 +245,49 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="btn-row">
       <button class="btn" type="button" data-copy="서울 강남구 논현동 72-8"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>주소 복사</button>
-      <a class="btn" href="tel:02-516-2300"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>예식장 전화</a>
+      <a class="btn" href="tel:0507-1447-2446"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-phone"/></svg>예식장 전화</a>
     </div>
 
     <div class="info">
       <div class="info-item">
-        <p class="info-head">주차안내 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-car"/></svg></span></p>
-        <p class="info-body">
-          주차 공간이 협소하오니, 되도록 대중교통을 이용해 주시기 바랍니다.<br>
-          부득이하게 주차가 필요하신 분들은 예식장(02-516-2300)으로 문의해 주세요.
-        </p>
+        <p class="info-head">차량으로 오시는 방법 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-car"/></svg></span></p>
+        <dl class="drive">
+          <dt>네비게이션</dt>
+          <dd>&ldquo;토브헤세드&rdquo; 또는 &ldquo;언북중학교&rdquo; 검색</dd>
+          <dt>도로명주소</dt>
+          <dd>서울특별시 강남구 논현2동 도산대로 38길 32</dd>
+          <dt>주차장 안내</dt>
+          <dd>주차요원의 안내를 받으세요.</dd>
+        </dl>
       </div>
       <div class="info-item">
-        <p class="info-head">지하철 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-subway"/></svg></span></p>
-        <p class="info-body">
-          [7호선] 학동역 방면<br>
-          [7호선] 강남구청역 방면<br>
-          정확한 출구 안내는 예식장 홈페이지를 확인해 주세요.
+        <p class="info-head">지하철로 오시는 방법 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-subway"/></svg></span></p>
+        <p class="info-body info-body--inline">
+          <span class="line-badge" aria-label="7호선">7</span>학동역 10번 출구 (서울세관 방면)
         </p>
+        <p class="info-body">셔틀버스 이용 또는 도보 5분</p>
       </div>
+
       <div class="info-item">
-        <p class="info-head">화환 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-bus"/></svg></span></p>
-        <p class="info-body">
-          예식장 공간이 넉넉하지 않아 화환은 정중히 사양합니다.<br>
-          마음만 감사히 받겠습니다.
+        <p class="info-head">버스로 오시는 방법 <span class="info-badge"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-bus"/></svg></span></p>
+
+        <p class="stop">언북중학교 입구 정류장 하차</p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-trunk">간선버스</span>145, 440
+        </p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-branch">지선버스</span>4212
+        </p>
+
+        <p class="stop">서울세관 정류장 하차</p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-trunk">간선버스</span>141
+        </p>
+        <p class="info-body info-body--inline">
+          <span class="bus-tag is-express">직행버스</span>3600
         </p>
       </div>
+
     </div>
   </section>
 
@@ -973,7 +386,16 @@ const CONFIG = {
   shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
 
   gallery: 15,          // photos/gallery-01.jpg … 순서로 읽습니다
-  galleryVisible: 6     // 처음에 보여줄 장수 (나머지는 "더 보기")
+  galleryVisible: 6,    // 처음에 보여줄 장수 (나머지는 "더 보기")
+
+  // 사진 원본 크기. img 의 width·height 속성으로 넣어 자리를 미리 잡습니다.
+  // 사진을 바꾸면 이 값도 함께 고쳐야 지연 로딩 중 배치가 흔들리지 않습니다.
+  //   확인:  sips -g pixelWidth -g pixelHeight photos/gallery-01.jpg
+  gallerySize: {
+    default: [1280, 1920],   // 대부분의 세로 사진
+    1:  [1280, 1886],
+    15: [1280, 853]          // 가로 사진
+  }
 };
 
 /* ---------- 갤러리 ---------- */
@@ -983,11 +405,12 @@ const CONFIG = {
   for (let i = 1; i <= CONFIG.gallery; i++) {
     const no = String(i).padStart(2, "0");
     const hidden = i > CONFIG.galleryVisible ? " is-hidden" : "";
+    const [w, h] = CONFIG.gallerySize[i] || CONFIG.gallerySize.default;
     html +=
-      '<button class="tile ph' + hidden + '" type="button" data-label="' + no + '" aria-label="사진 ' + i + ' 크게 보기">' +
+      '<button class="tile' + hidden + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
         '<img src="photos/gallery-' + no + '.jpg" alt="" loading="lazy"' +
-          ' onload="this.parentElement.classList.add(\'is-loaded\')"' +
-          ' onerror="this.remove()">' +
+          ' width="' + w + '" height="' + h + '"' +
+          ' onerror="this.parentElement.classList.add(\'is-empty\');this.remove()">' +
       '</button>';
   }
   grid.innerHTML = html;
@@ -1303,6 +726,29 @@ document.getElementById("shareBtn").addEventListener("click", async () => {
   }
   copyText(data.url);
 });
+
+/* ---------- 상태바 색 ----------
+   표지가 화면 맨 위에 걸쳐 있는 동안에는 사진 톤,
+   본문으로 넘어가면 흰색. iOS Safari 상단 바가 이 값을 따라갑니다. */
+(function statusBarTint(){
+  const meta = document.querySelector('meta[name="theme-color"]');
+  const cover = document.querySelector('.cover');
+  if (!meta || !cover) return;
+  const COVER = "#4a352d", PAGE = "#ffffff";
+  let current = "";
+
+  // 요소 하나의 위치만 읽으므로 스크롤마다 그대로 호출해도 부담이 없습니다.
+  // requestAnimationFrame 으로 묶으면 탭이 백그라운드일 때 갱신이 멈춥니다.
+  function apply(){
+    const r = cover.getBoundingClientRect();
+    // 표지가 화면 맨 윗줄을 지나고 있는 동안만 사진 톤
+    const next = (r.top <= 0 && r.bottom > 0) ? COVER : PAGE;
+    if (next !== current) { current = next; meta.setAttribute("content", next); }
+  }
+  addEventListener("scroll", apply, { passive: true });
+  addEventListener("resize", apply, { passive: true });
+  apply();
+})();
 
 /* ---------- 스크롤 등장 ---------- */
 const io = new IntersectionObserver(list => {
