@@ -33,6 +33,11 @@ const CONFIG = {
   shareTitle: "희우 💍 우희 결혼합니다.",
   shareText: "2026년 10월 25일 일요일 오후 3시 · 토브헤세드",
 
+  // 카카오톡 카드 전용. 카드는 2:1 이 잘 맞아 따로 뽑았습니다.
+  // 날짜·장소는 아래 itemContent 에 따로 들어가므로 설명은 인사말로 둡니다.
+  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/kakao-message-cover.jpg",
+  kakaoDesc: "귀한 걸음으로 함께해 주세요.",
+
   // 카카오톡 공유(미리보기 카드)에 필요한 JavaScript 키.
   //   https://developers.kakao.com → 내 애플리케이션 → 앱 키 → JavaScript 키
   //   같은 화면의 [플랫폼 > Web] 에 이 페이지 도메인도 등록해야 합니다.
@@ -545,6 +550,19 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
 
   let ready = false;
 
+  /* 카드 이미지의 원본 크기를 미리 읽어 둡니다.
+     크기를 알려 주지 않으면 카카오가 카드를 작은 형태로 접고 버튼도 가려집니다.
+     값을 박아 두지 않고 이미지에서 읽으므로, og-image 를 다른 비율로 바꿔도
+     그 비율이 그대로 전달됩니다. */
+  let imageSize = null;
+  (function measureShareImage(){
+    const probe = new Image();
+    probe.onload = () => {
+      if (probe.naturalWidth) imageSize = { w: probe.naturalWidth, h: probe.naturalHeight };
+    };
+    probe.src = CONFIG.kakaoImage || CONFIG.shareImage;
+  })();
+
   if (CONFIG.kakaoKey) {
     const s = document.createElement("script");
     s.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js";
@@ -579,18 +597,33 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
     if (!ready) { fallback(); return; }
 
     const link = { mobileWebUrl: CONFIG.shareUrl, webUrl: CONFIG.shareUrl };
+    const content = {
+      title: CONFIG.shareTitle,
+      description: CONFIG.kakaoDesc || CONFIG.shareText,
+      imageUrl: CONFIG.kakaoImage || CONFIG.shareImage,
+      link: link
+    };
+    if (imageSize) {                       // 원본 비율 그대로
+      content.imageWidth = imageSize.w;
+      content.imageHeight = imageSize.h;
+    }
+
+    /* Feed B형 — content 아래에 항목 목록과 요약을 덧붙인 형태입니다.
+       https://developers.kakao.com/docs/ko/message-template/common#feed-b
+       item 은 짧게(6자 안쪽), 표시되는 줄 수 제한이 있어 항목은 둘만 둡니다. */
+    const itemContent = {
+      profileText: CONFIG.groom + " · " + CONFIG.bride,
+      items: [
+        { item: "예식", itemOp: "10월 25일 (일) 오후 3시" },
+        { item: "장소", itemOp: CONFIG.venue + " · 강남" }
+      ]
+    };
+
     try {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
-        content: {
-          title: CONFIG.shareTitle,
-          description: CONFIG.shareText,
-          imageUrl: CONFIG.shareImage,
-          // 크기를 알려 주지 않으면 카드가 작은 형태로 접히고 버튼도 함께 가려집니다
-          imageWidth: 1200,
-          imageHeight: 630,
-          link: link
-        },
+        content: content,
+        itemContent: itemContent,
         buttons: [{ title: "청첩장 보기", link: link }],
         installTalk: true
       });
@@ -625,12 +658,14 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
 /* ---------- 상태바 색 ----------
    표지가 화면 맨 위에 걸쳐 있는 동안에는 사진 톤,
    본문으로 넘어가면 흰색. iOS Safari 상단 바가 이 값을 따라갑니다.
-   meta[name=theme-color] 의 data-cover 에 표지 톤을 적어 두면 그 색을 씁니다. */
+   표지 톤은 <body data-cover-tint="#000"> 으로 지정합니다. meta 에는 표준 속성만
+   두는 편이 안전해서(사파리가 초기 값을 그대로 읽습니다) body 쪽에 적습니다. */
 (function statusBarTint(){
   const meta = document.querySelector('meta[name="theme-color"]');
   const cover = document.querySelector('.cover');
   if (!meta || !cover) return;
-  const COVER = meta.dataset.cover || "#4a352d", PAGE_TINT = "#ffffff";
+  const COVER = document.body.dataset.coverTint || meta.dataset.cover || "#4a352d";
+  const PAGE_TINT = "#ffffff";
   let current = "";
 
   // 요소 하나의 위치만 읽으므로 스크롤마다 그대로 호출해도 부담이 없습니다.

@@ -21,10 +21,10 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
 
-<!-- 상태바 색.
-     표지가 화면 맨 위에 걸쳐 있는 동안에는 data-cover 색, 본문으로 넘어가면 흰색으로
-     script.js 가 바꿉니다. 표지 위쪽을 검정으로 덮었으므로 같은 검정을 씁니다. -->
-<meta name="theme-color" content="#0d0c0b" data-cover="#0d0c0b">
+<!-- 상태바 색. 표지 위쪽을 검정으로 덮었으므로 같은 검정으로 시작합니다.
+     본문으로 넘어가면 script.js 가 흰색으로 바꿉니다(표지 톤은 body 의
+     data-cover-tint). 사파리는 이 초기 값을 그대로 읽으므로 표준 속성만 둡니다. -->
+<meta name="theme-color" content="#0d0c0b">
 
 <!-- 홈 화면에 추가한 경우에만 상태바 뒤까지 사진이 깔립니다 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -427,7 +427,7 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <!-- 갤러리는 정사각 3열 한 판(9장). 나머지 동작은 script.js 가 본 화면과 공유합니다 -->
-<body data-gallery="9" data-gallery-layout="square">
+<body data-gallery="9" data-gallery-layout="square" data-cover-tint="#0d0c0b">
 
 <!-- 아이콘 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
