@@ -37,12 +37,11 @@ const CONFIG = {
   shareTitle: "희우 💍 우희 결혼합니다.",
   shareText: "2026년 10월 25일 일요일 오후 3시 · 토브헤세드",
 
-  // 카카오톡 카드 전용. 1:2 세로(800×1600)입니다.
-  // 카드의 그림 자리가 가로형이라 세로 그림은 위아래가 잘릴 수 있습니다.
-  // 잘려 보이면 2:1(1200×600)로 다시 뽑으면 온전히 들어갑니다.
+  // 카카오톡 카드 전용. 1:1 정사각(800×800) — 카카오가 권장하는 크기 형태입니다.
+  // 세로로 길게 두면(2:3, 1:2) 카드에서 위아래가 잘립니다.
   // 카카오는 이 주소로 받은 그림을 자기 서버에 캐시합니다. 그림을 갈 때는
   // 파일명을 함께 바꿔야 새 그림이 나갑니다.
-  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/kakao-share-cover-1x2.jpg",
+  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/kakao-share-cover-1x1.jpg",
   kakaoDesc: "귀한 걸음으로 함께해 주세요.",
 
   // 카카오톡 공유(미리보기 카드)에 필요한 JavaScript 키.
