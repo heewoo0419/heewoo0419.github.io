@@ -418,6 +418,9 @@ a{color:inherit;text-decoration:none}
 .sec--mist .btn{background:var(--paper)}
 .btn:hover{background:var(--mist)}
 .btn .ico{width:14px;height:14px;flex:none}
+/* 지도·내비 브랜드 아이콘 — 모두 16px 박스에 담고, 비율은 그대로 둔다 */
+.btn .btn-ico{width:16px;height:16px;flex:none;object-fit:contain}
+.btn .btn-ico--app{object-fit:cover;border-radius:4px}   /* 배경이 있는 앱 아이콘은 박스를 꽉 채운다 */
 
 .ico{
   width:16px;height:16px;
@@ -761,4 +764,7 @@ a{color:inherit;text-decoration:none}
 @media (max-width:360px){
   :root{--pad:20px}
   .date-line{font-size:19px}
+  /* 지도·내비 버튼 3개가 한 줄에 들어가도록 여백을 줄입니다 */
+  .btn-row{gap:5px}
+  .btn{padding:12px 4px;font-size:12px}
 }

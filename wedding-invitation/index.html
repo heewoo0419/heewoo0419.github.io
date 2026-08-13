@@ -252,8 +252,10 @@
     <div class="map" id="map" role="img" aria-label="토브헤세드 위치 지도"></div>
 
     <div class="btn-row">
-      <a class="btn" data-map="naver" href="https://map.naver.com/p/search/%ED%86%A0%EB%B8%8C%ED%97%A4%EC%84%B8%EB%93%9C" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>네이버 지도</a>
-      <a class="btn" data-map="kakao" href="https://map.kakao.com/link/map/%ED%86%A0%EB%B8%8C%ED%97%A4%EC%84%B8%EB%93%9C,37.5185551,127.0327655" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>카카오내비</a>
+      <a class="btn" data-map="naver" href="https://map.naver.com/p/search/%ED%86%A0%EB%B8%8C%ED%97%A4%EC%84%B8%EB%93%9C" target="_blank" rel="noopener"><img class="btn-ico" src="assets/naver-map-icon.png" alt="" width="74" height="96" loading="lazy" decoding="async">네이버 지도</a>
+      <a class="btn" data-map="kakao" href="https://map.kakao.com/link/map/%ED%86%A0%EB%B8%8C%ED%97%A4%EC%84%B8%EB%93%9C,37.5185551,127.0327655" target="_blank" rel="noopener"><img class="btn-ico btn-ico--app" src="assets/kakaonavi.png" alt="" width="68" height="69" loading="lazy" decoding="async">카카오내비</a>
+      <!-- 티맵은 PC 웹 지도가 없어 <a href> 대신 버튼입니다 (모바일은 앱, PC 는 주소 복사) -->
+      <button class="btn" type="button" data-map="tmap"><img class="btn-ico" src="assets/tmap-icon.png" alt="" width="96" height="96" loading="lazy" decoding="async">티맵</button>
     </div>
     <div class="btn-row">
       <button class="btn" type="button" data-copy="서울특별시 강남구 논현2동 도산대로 38길 32"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-copy"/></svg>주소 복사</button>
@@ -604,9 +606,10 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
 
 /* ============================================================
    지도 앱 연동 — 앱 스킴 먼저, 실패하면 웹/스토어로 폴백
-   모바일: nmap:// · kakaomap:// 실행 시도
-           1.1초 안에 화면이 그대로면(=앱 없음) 웹 주소로 이동
+   모바일: nmap:// · kakaomap:// · tmap:// 실행 시도
+           1.1초 안에 화면이 그대로면(=앱 없음) 폴백 주소로 이동
    데스크톱: 앱 스킴을 건너뛰고 <a href> 의 웹 주소를 그대로 사용
+             (티맵은 웹 지도가 없어 주소 복사로 안내)
    ============================================================ */
 const MAP_APPS = {
   naver: {
@@ -616,6 +619,14 @@ const MAP_APPS = {
   },
   kakao: {
     scheme: () => "kakaomap://look?p=" + CONFIG.lat + "," + CONFIG.lng
+  },
+  tmap: {
+    scheme: () => "tmap://route?goalname=" + encodeURIComponent(CONFIG.venue) +
+                  "&goalx=" + CONFIG.lng + "&goaly=" + CONFIG.lat,
+    // 티맵은 웹 지도가 없습니다. 앱이 없으면 설치 페이지로 안내합니다.
+    fallback: () => /iPhone|iPad|iPod/i.test(UA)
+      ? "https://apps.apple.com/kr/app/id431589174"
+      : "https://play.google.com/store/apps/details?id=com.skt.tmap.ku"
   }
 };
 
@@ -625,6 +636,7 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(UA);
 function openMapApp(key, webUrl){
   const app = MAP_APPS[key];
   if (!app) return;
+  if (app.fallback) webUrl = app.fallback();
 
   let moved = false;
   const onHide = () => { moved = true; };
@@ -641,11 +653,17 @@ function openMapApp(key, webUrl){
   location.href = app.scheme();
 }
 
-document.querySelectorAll("[data-map]").forEach(a => {
-  a.addEventListener("click", e => {
-    if (!isMobile) return;                  // 데스크톱은 기본 링크 사용
+document.querySelectorAll("[data-map]").forEach(el => {
+  el.addEventListener("click", e => {
+    if (!isMobile) {                        // 데스크톱
+      if (!el.href) {                       // 웹 지도가 없는 앱(티맵)
+        copyText(CONFIG.address);
+        showToast("티맵은 휴대폰에서 열립니다. 주소를 복사했어요");
+      }
+      return;                               // 나머지는 기본 링크 사용
+    }
     e.preventDefault();
-    openMapApp(a.dataset.map, a.href);
+    openMapApp(el.dataset.map, el.href);
   });
 });
 
