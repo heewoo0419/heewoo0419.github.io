@@ -76,7 +76,7 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=202608131334">
+<link rel="stylesheet" href="style.css?v=202608131350">
 </head>
 <body>
 
@@ -700,6 +700,34 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") move(-1);
   if (e.key === "ArrowRight") move(1);
 });
+
+/* 스와이프 — 옆으로 밀면 사진 이동, 아래로 밀면 닫기.
+   손가락이 둘 이상이면(핀치 확대) 건드리지 않습니다. */
+(function swipe(){
+  const MOVE = 50;    // 사진을 넘길 최소 거리(px)
+  const CLOSE = 90;   // 닫을 최소 거리(px)
+  let x0 = 0, y0 = 0, t0 = 0, valid = false;
+
+  lightbox.addEventListener("touchstart", e => {
+    valid = e.touches.length === 1;
+    if (!valid) return;
+    const t = e.changedTouches[0];
+    x0 = t.clientX; y0 = t.clientY; t0 = Date.now();
+  }, { passive: true });
+
+  lightbox.addEventListener("touchend", e => {
+    if (!valid || e.touches.length) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Date.now() - t0 > 700) return;              // 천천히 끈 것은 스와이프로 보지 않음
+
+    if (Math.abs(dx) > MOVE && Math.abs(dx) > Math.abs(dy) * 1.4) {
+      move(dx < 0 ? 1 : -1);                        // 왼쪽으로 밀면 다음 장
+    } else if (dy > CLOSE && dy > Math.abs(dx) * 1.4) {
+      closeLb();                                    // 아래로 내리면 닫기
+    }
+  }, { passive: true });
+})();
 
 /* ---------- 일정 저장 (.ics) ---------- */
 document.getElementById("icsBtn").addEventListener("click", () => {

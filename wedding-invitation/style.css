@@ -645,6 +645,10 @@ a{color:inherit;text-decoration:none}
   display:none;
   align-items:center;justify-content:center;
   background:rgba(18,17,16,.95);
+  /* manipulation 은 더블탭 확대만 끕니다. 핀치 확대는 그대로 씁니다. */
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
 }
 .lightbox.on{display:flex}
 .lightbox figure{
