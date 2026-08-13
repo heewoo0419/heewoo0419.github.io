@@ -621,15 +621,23 @@ a{color:inherit;text-decoration:none}
   flex:none;
   display:inline-flex;
   align-items:center;
-  gap:4px;
-  padding:7px 12px;
+  gap:5px;
+  padding:6px 12px 6px 9px;
   border-radius:20px;
-  background:#0064ff;
+  background:#fff;
+  border:1px solid #0064ff;
   font-size:11.5px;
-  color:#fff;
+  color:#0064ff;
 }
-.toss:hover{background:#0057e0}
-.toss .ico{width:12px;height:12px;stroke-width:1.8}
+.toss:hover{background:#f2f7ff}
+
+/* 흰 버튼이라 로고를 원래 색 그대로 얹습니다 */
+.toss-mark{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+}
+.toss-mark img{width:13px;height:13px}
 
 /* ── 맺음 ──────────────────────────────────────────── */
 .closing-word{
