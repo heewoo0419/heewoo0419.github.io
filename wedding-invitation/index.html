@@ -74,9 +74,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&text=%EC%9D%B4%ED%9D%AC%EC%9A%B0%EC%8B%A0&display=swap" rel="stylesheet">
 
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
-<link rel="preload" href="fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/rockville-solid.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=202608131408">
+<link rel="stylesheet" href="style.css?v=202608131414">
 </head>
 <body>
 
@@ -114,7 +114,7 @@
   <!-- ── 표지 ─────────────────────────────────────── -->
   <header class="cover">
     <div class="ph" data-label="PHOTOS / COVER.JPG">
-      <img src="photos/cover.jpg" alt="희우와 우희" onerror="this.remove()">
+      <img src="assets/photos/cover.jpg" alt="희우와 우희" onerror="this.remove()">
     </div>
 
     <p class="cover-script">
@@ -202,11 +202,11 @@
   <!-- ── 사진 콜라주 ──────────────────────────────── -->
   <section class="sec reveal" style="padding-top:0">
     <div class="collage">
-      <div class="ph c-a" data-label="COLLAGE-1"><img src="photos/collage-1.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
-      <div class="ph c-b" data-label="COLLAGE-2"><img src="photos/collage-2.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="ph c-a" data-label="COLLAGE-1"><img src="assets/photos/collage-1.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="ph c-b" data-label="COLLAGE-2"><img src="assets/photos/collage-2.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
       <p class="collage-cap">Sunday, 25 October, 2026</p>
-      <div class="ph c-c" data-label="COLLAGE-3"><img src="photos/collage-3.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
-      <div class="ph c-d" data-label="COLLAGE-4"><img src="photos/collage-4.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="ph c-c" data-label="COLLAGE-3"><img src="assets/photos/collage-3.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="ph c-d" data-label="COLLAGE-4"><img src="assets/photos/collage-4.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
     </div>
     <p class="collage-foot">Groom &amp; Bride</p>
   </section>
@@ -397,12 +397,12 @@ const CONFIG = {
 
   shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
 
-  gallery: 15,          // photos/gallery-01.jpg … 순서로 읽습니다
+  gallery: 15,          // assets/photos/gallery-01.jpg … 순서로 읽습니다
   galleryVisible: 6,    // 처음에 보여줄 장수 (나머지는 "더 보기")
 
   // 사진 원본 크기. img 의 width·height 속성으로 넣어 자리를 미리 잡습니다.
   // 사진을 바꾸면 이 값도 함께 고쳐야 지연 로딩 중 배치가 흔들리지 않습니다.
-  //   확인:  sips -g pixelWidth -g pixelHeight photos/gallery-01.jpg
+  //   확인:  sips -g pixelWidth -g pixelHeight assets/photos/gallery-01.jpg
   gallerySize: {
     default: [1280, 1920],   // 대부분의 세로 사진
     1:  [1280, 1886],
@@ -421,7 +421,7 @@ const CONFIG = {
     const wide = w > h ? " is-wide" : "";   // 가로 사진은 한 줄을 다 씁니다
     html +=
       '<button class="tile' + hidden + wide + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
-        '<img src="photos/gallery-' + no + '.jpg" alt="" loading="lazy"' +
+        '<img src="assets/photos/gallery-' + no + '.jpg" alt="" loading="lazy"' +
           ' width="' + w + '" height="' + h + '"' +
           ' onerror="this.parentElement.classList.add(\'is-empty\');this.remove()">' +
       '</button>';
