@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>희우 · 우희 결혼합니다</title>
+<meta name="description" content="2026년 10월 25일 일요일 오후 3시, 토브헤세드">
+
+<!-- ── 두 화면으로 갈라 보내는 진입점 ──────────────────────────────
+     이 주소로 들어오면 본 화면과 Trip 시안 중 하나로 넘깁니다.
+     · 한 번 정해진 화면은 그 사람에게 계속 같게 보입니다(localStorage).
+       열 때마다 바뀌면 "아까 본 것과 다르다"는 혼란이 생깁니다.
+     · 직접 지정해 보고 싶으면 ?v=main / ?v=trip 을 붙이세요.
+     · 카카오톡·슬랙 크롤러는 JS 를 실행하지 않으므로, 미리보기용 og 태그는
+       이 파일에도 그대로 두어야 카드가 뜹니다.
+-->
+<link rel="canonical" href="https://heewoo0419.github.io/wedding-invitation/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="희우 · 우희 결혼합니다">
+<meta property="og:url" content="https://heewoo0419.github.io/wedding-invitation/ab.html">
+<meta property="og:title" content="희우 💍 우희 결혼합니다.">
+<meta property="og:description" content="2026년 10월 25일 일요일 오후 3시 · 토브헤세드">
+<meta property="og:image" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
+<meta property="og:image:secure_url" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="희우 · 우희 결혼합니다 — 2026.10.25 토브헤세드">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="희우 💍 우희 결혼합니다.">
+<meta name="twitter:description" content="2026년 10월 25일 일요일 오후 3시 · 토브헤세드">
+<meta name="twitter:image" content="https://heewoo0419.github.io/wedding-invitation/og-image.jpg">
+
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0c0b">
+
+<style>
+  html,body{height:100%}
+  body{
+    margin:0;
+    display:flex;align-items:center;justify-content:center;
+    background:#0d0c0b;color:rgba(255,255,255,.5);
+    font:13px/1.8 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+    letter-spacing:-.02em;
+  }
+  /* 넘어가는 사이 아주 잠깐만 보이는 글자입니다 */
+  p{margin:0;opacity:0;animation:show .2s ease .5s forwards}
+  @keyframes show{to{opacity:1}}
+</style>
+</head>
+<body>
+<p>청첩장을 여는 중입니다…</p>
+
+<script>
+(function route(){
+  var MAIN = "./";                 // 본 화면
+  var TRIP = "./index.trip.html";  // Trip 시안
+  var KEY  = "wedding-variant";
+
+  // 주소로 직접 지정하면 그 화면으로 보내고, 그 선택을 기억합니다
+  var forced = (location.search.match(/[?&]v=(main|trip)/) || [])[1];
+
+  var pick;
+  try {
+    pick = forced || localStorage.getItem(KEY);
+    if (pick !== "main" && pick !== "trip") pick = Math.random() < 0.5 ? "main" : "trip";
+    localStorage.setItem(KEY, pick);
+  } catch (e) {
+    // 사생활 보호 모드 등에서 localStorage 가 막히면 그때그때 정합니다
+    pick = forced || (Math.random() < 0.5 ? "main" : "trip");
+  }
+
+  // replace 로 넘겨야 뒤로 가기가 이 페이지에 걸려 되돌아오지 않습니다
+  location.replace(pick === "trip" ? TRIP : MAIN);
+})();
+</script>
+
+<noscript>
+  <!-- JS 가 꺼져 있으면 본 화면으로 보냅니다 -->
+  <meta http-equiv="refresh" content="0; url=./">
+</noscript>
+</body>
+</html>
