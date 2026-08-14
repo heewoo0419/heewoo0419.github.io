@@ -9,7 +9,7 @@
      · 갤러리 배치   data-gallery-layout="grid" 면 3열 한 판(더보기 없음)
      · 사진 장수     data-gallery="9"
      · 공유 주소     data-share-url="…"   (없으면 CONFIG.shareUrl)
-     · 상태바 고정   data-tint-fixed      (있으면 theme-color 를 건드리지 않음)
+     · 상태바 전환   data-tint-body       (있으면 body 배경색도 함께 바꿉니다 — iOS 26 용)
      · 표지 상태바   data-cover-tint="…"  (스크롤을 따라 바꿀 때 쓰는 색)
    ============================================================ */
 
@@ -681,23 +681,26 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
 })();
 
 /* ---------- 상태바 색 ----------
-   표지가 화면 맨 위에 걸쳐 있는 동안에는 사진 톤,
-   본문으로 넘어가면 흰색. iOS Safari 상단 바가 이 값을 따라갑니다.
-   표지 톤은 <body data-cover-tint="#000"> 으로 지정합니다. meta 에는 표준 속성만
-   두는 편이 안전해서(사파리가 초기 값을 그대로 읽습니다) body 쪽에 적습니다. */
+   표지가 화면 맨 위에 걸쳐 있는 동안에는 사진 톤, 본문으로 넘어가면 흰색.
+
+   이 색을 읽는 쪽이 둘로 갈립니다.
+     · 안드로이드 크롬 · iOS 18 이하 → <meta name="theme-color">
+     · iOS 26 이상 사파리          → body 의 배경색 (theme-color 는 무시합니다)
+   그래서 둘을 함께 바꿉니다. 사파리는 화면 위아래 툴바를 언제나 같은 색 하나로
+   칠하며, 위와 아래를 각각 다르게 지정하는 방법은 없습니다.
+
+   body 배경까지 바꿀 화면만 <body data-tint-body> 를 답니다. 옛 화면(index.old.html)은
+   body 배경(#e8e6e4)이 디자인의 일부라 이 속성을 두지 않고 meta 만 따라갑니다.
+   표지 톤은 <body data-cover-tint="#000"> 으로 지정합니다. */
 (function statusBarTint(){
   const meta = document.querySelector('meta[name="theme-color"]');
   const cover = document.querySelector('.cover');
-  if (!meta || !cover) return;
+  if (!cover) return;
 
-  /* 아이폰 사파리는 문서를 읽는 시점의 theme-color 만 보고, 그 뒤 JS 로 바꾼 값은
-     반영하지 않습니다. 그래서 색을 하나로 두고 갈 화면은 아예 건드리지 않습니다.
-     <body data-tint-fixed> 를 두면 meta 에 적힌 값이 그대로 남습니다. */
-  if (document.body.hasAttribute("data-tint-fixed")) return;
-
-  const COVER = document.body.dataset.coverTint || meta.dataset.cover || "#4a352d";
+  const tintBody = document.body.hasAttribute("data-tint-body");
+  const COVER = document.body.dataset.coverTint || meta?.dataset.cover || "#4a352d";
   const PAGE_TINT = "#ffffff";
-  let current = meta.getAttribute("content");
+  let current = null;   // 첫 호출에서 meta 와 body 를 확실히 맞춥니다
 
   // 요소 하나의 위치만 읽으므로 스크롤마다 그대로 호출해도 부담이 없습니다.
   // requestAnimationFrame 으로 묶으면 탭이 백그라운드일 때 갱신이 멈춥니다.
@@ -706,7 +709,10 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
     // 표지가 화면에 조금이라도 남아 있으면 사진 톤.
     // top <= 0 으로 재면 맨 위에서 당겼을 때(오버스크롤) 잠깐 흰색으로 튑니다.
     const next = (r.bottom > 0 && r.top < innerHeight) ? COVER : PAGE_TINT;
-    if (next !== current) { current = next; meta.setAttribute("content", next); }
+    if (next === current) return;
+    current = next;
+    if (meta) meta.setAttribute("content", next);
+    if (tintBody) document.body.style.backgroundColor = next;
   }
   addEventListener("scroll", apply, { passive: true });
   addEventListener("resize", apply, { passive: true });

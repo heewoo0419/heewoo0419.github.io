@@ -53,8 +53,9 @@
 <meta name="googlebot" content="noindex, nofollow">
 
 <!-- 상태바 색. 표지 위쪽을 검정으로 덮었으므로 같은 검정을 씁니다.
-     아이폰 사파리는 문서를 읽는 시점의 값만 보고 그 뒤 JS 변경은 반영하지 않으므로,
-     이 화면은 스크롤에 따라 바꾸지 않고 이 값으로 고정합니다(body data-tint-fixed). -->
+     이 값을 읽는 것은 안드로이드 크롬과 iOS 18 이하입니다.
+     iOS 26 부터 사파리는 이 태그를 무시하고 body 배경색으로 위아래 툴바를 칠하므로,
+     그쪽은 style.css 의 body 배경과 script.js 가 함께 맡습니다(body data-tint-body). -->
 <meta name="theme-color" content="#0d0c0b">
 
 <!-- 홈 화면에 추가한 경우에만 상태바 뒤까지 사진이 깔립니다 -->
@@ -70,11 +71,11 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="assets/fonts/bluekendy.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=9fff9734">
+<link rel="stylesheet" href="style.css?v=4d70d0ed">
 </head>
 <!-- 갤러리는 정사각 3열 한 판(9장). 나머지 동작은 script.js 가 본 화면과 공유합니다 -->
 <body data-gallery="9" data-gallery-layout="grid"
-      data-tint-fixed>   <!-- 상단바는 표지 검정으로 고정 (사파리는 로드 시점 값만 읽습니다) -->
+      data-tint-body data-cover-tint="#0d0c0b">   <!-- 표지에선 검정, 본문에선 흰색 (script.js) -->
 
 <!-- 아이콘 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -381,6 +382,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="script.js?v=f63ee677" defer></script>
+<script src="script.js?v=e9dedd30" defer></script>
 </body>
 </html>
