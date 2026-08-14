@@ -5,21 +5,6 @@
    두 화면은 마크업이 달라 스타일도 따로 둡니다.
    ============================================================ */
 
-/* 커버 스크립트 — Bluekendy.
-   커버에 쓰는 13자만 서브셋했습니다 (133KB → 2.9KB).
-   다시 뽑으려면:
-   pyftsubset assets/fonts/Bluekendy.ttf --output-file=assets/fonts/bluekendy.woff2 \
-     --flavor=woff2 --text="OurWeddingDay!" --layout-features="kern,liga,calt,dlig" --no-hinting */
-@font-face{
-  font-family:"Bluekendy";
-  src:url("assets/fonts/bluekendy.woff2") format("woff2");
-  font-weight:400;
-  /* swap 이면 받아오는 사이 폴백(cursive)으로 먼저 그려져, 표지의 큰 글씨가
-     엉뚱한 손글씨로 번쩍입니다. block 은 그 동안 글자를 감췄다가 한 번에 그립니다.
-     2.9KB 서브셋을 preload 로 미리 받으므로 감춰지는 시간은 거의 없고,
-     혹시 못 받아도 3초 뒤에는 폴백으로 보여 줍니다. */
-  font-display:block;
-}
 /* ═══════════════════════════════════════════════════════════
    토큰
    ═══════════════════════════════════════════════════════════ */
@@ -38,7 +23,6 @@
   --mj:"Nanum Myeongjo",serif;
   --pf:"Playfair Display",serif;
   --gm:"EB Garamond",serif;
-  --script:"Bluekendy",cursive;
   --ink-cover:#1f1d1a;   /* 커버 스크립트 — 밝은 사진 하단과 대비되는 짙은 잉크 */
 
   --pad:24px;
@@ -142,20 +126,72 @@ a{color:inherit;text-decoration:none}
   position:absolute;left:0;right:0;bottom:0;
   padding:0 20px 30px;   /* 스크립트를 크게 쓰려고 커버만 좌우를 조금 좁힙니다 */
 }
-/* Bluekendy 는 x-height 가 0.26em 으로 작아, 같은 pt 에서도 훨씬 작게 보입니다.
-   커버 타이틀 무게를 맞추려 크게 잡았습니다. */
+/* 손글씨는 폰트가 아니라 SVG 입니다.
+   Bluekendy 를 fontTools 로 떠서 글리프마다 path 로 심었습니다(커닝 반영).
+   글자를 하나씩 드러내려면 글자마다 요소가 있어야 하는데, 폰트 텍스트로는
+   글자 단위를 잡을 수 없습니다. 폰트 파일(2.9KB)과 preload, font-display:block
+   때문에 글자가 감춰졌다 나타나던 것도 함께 사라졌습니다.
+
+   다시 뽑으려면 tools 가 아니라 fontTools 로:
+     TTFont(...).getGlyphSet() → SVGPathPen 으로 글리프별 path,
+     BoundsPen 으로 실제 글자 자리를 재서 viewBox 를 좁힙니다. */
 .cover-script{
-  font-family:var(--script);
-  color:var(--ink-cover);
-  /* 자간은 폰트 원래 값(0)을 씁니다. 크기는 프레임에 들어가는 선까지 —
-     430px 폭에서 "Wedding Day" 글자 폭 366 + 들여쓰기 6 = 372 (여백 안쪽 390). */
-  font-size:clamp(90px,28vw,122px);
-  line-height:.72;      /* 두 줄을 바짝 붙입니다 */
-  letter-spacing:0;
-  text-shadow:0 1px 14px rgba(255,255,255,.6);   /* 밝은 바닥에서 획이 뜨도록 아주 옅은 흰 글로우 */
+  position:relative;
+  /* 밝은 바닥에서 획이 뜨도록 아주 옅은 흰 글로우 (텍스트가 아니므로 filter 로) */
+  filter:drop-shadow(0 1px 14px rgba(255,255,255,.6));
 }
-.cover-script span{display:block}
-.cover-script span+span{margin-left:6px}
+.cs{
+  display:block;
+  width:100%;height:auto;
+  fill:var(--ink-cover);
+  overflow:visible;
+}
+/* 두 줄의 글자 크기를 맞추는 비율입니다. "Wedding Day" 를 100% 로 둘 때
+   "Our" 은 42.9% — 글리프 실측 폭에서 나온 값이라 임의로 바꾸면 크기가 어긋납니다. */
+.cs--our{width:42.9%}
+.cs--wed{width:100%;margin-top:-3%}   /* 두 줄을 바짝 붙입니다 */
+/* 스크린 리더와 검색용. 화면에는 SVG 만 보입니다 */
+.cover-script b{
+  position:absolute;width:1px;height:1px;
+  overflow:hidden;clip-path:inset(50%);
+  font-weight:400;
+}
+
+/* ── 커버 등장 — 획 순서대로 쓰기 ──────────────────────────────
+   보이는 것은 원본 글자 그대로입니다. 그 위에 펜이 지나간 궤적을 굵은 선으로
+   그려 마스크로 쓰고, 그 선을 stroke-dashoffset 으로 그려 나갑니다.
+   마스크가 열리는 만큼 글자가 드러나므로 획을 따라 쓰이는 것처럼 보입니다.
+
+   궤적은 글리프를 이미지로 구워 세선화한 뒤 끝점에서부터 이어 뽑았습니다.
+   선 길이(--l)·시간(--d)·시작 시각(--t)은 미리 재서 마크업에 박아 두었습니다
+   — getTotalLength() 를 부르지 않아도 되게 하려는 것입니다.
+
+   전체 1.75초. 나머지는 떠오르기만 합니다 — 움직이는 것이 둘 이상이면
+   손글씨가 묻힙니다. */
+.pen polyline{
+  fill:none;stroke:#fff;stroke-width:46;
+  stroke-linecap:round;stroke-linejoin:round;
+  /* 선 두께(46)만큼 여유를 둡니다. dashoffset 을 길이만큼만 밀면 둥근 끝 마개
+     (반지름 23)가 시작점에 남아, 획을 긋기도 전에 점으로 비칩니다.
+     --l 은 단위 없는 수라 1px 을 곱해야 calc 가 성립합니다. */
+  stroke-dasharray:calc(var(--l) * 1px + 46px) 9999;
+  stroke-dashoffset:calc(var(--l) * 1px + 46px);
+  animation:cover-write var(--d) linear forwards;
+  animation-delay:var(--t);
+}
+@keyframes cover-write{ to{ stroke-dashoffset:0 } }
+
+/* 다 쓴 글자를 마스크 없이 덧대 이음새를 메웁니다(위 설명 참고) */
+.cs .done{opacity:0;animation:cover-done .12s linear forwards;animation-delay:var(--t)}
+@keyframes cover-done{ to{ opacity:1 } }
+
+.cover-top,.cover-meta{opacity:0;animation:cover-rise .9s ease-out forwards}
+.cover-top{animation-delay:.15s}
+.cover-meta{animation-delay:1.9s}   /* 손글씨가 다 쓰인 뒤에 */
+@keyframes cover-rise{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
 /* 레퍼런스와 같은 결 — 세리프 문장형, 스크립트와 같은 오렌지 */
 .cover-meta{
   margin-top:13px;
@@ -483,10 +519,14 @@ a{color:inherit;text-decoration:none}
 @media (prefers-reduced-motion:reduce){
   .rise>*{opacity:1;transform:none;transition:none}
   *{transition-duration:.01ms !important}
+  /* 커버 등장도 건너뛰고 완성된 상태로 보여 줍니다 */
+  .pen polyline{stroke-dashoffset:0;animation:none}
+  .cs .done{opacity:1;animation:none}
+  .cover-top,.cover-meta{opacity:1;animation:none}
 }
 @media (max-width:360px){
   :root{--pad:20px}
-  .cover-script{font-size:26vw}   /* 320px 화면에서도 두 번째 줄이 넘치지 않게 */
+  /* 손글씨는 SVG 라 폭 100% 로 알아서 줄어듭니다(옛 font-size 규칙은 뺐습니다) */
   .dday{font-size:46px}
   .btn{padding:13px 3px;font-size:12px}
   .btns{gap:5px}
