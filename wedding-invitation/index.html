@@ -71,10 +71,13 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="assets/fonts/bluekendy.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=c6bf652f">
+<link rel="stylesheet" href="style.css?v=fd06fda5">
 </head>
-<!-- 갤러리는 정사각 3열 한 판(9장). 나머지 동작은 script.js 가 본 화면과 공유합니다 -->
-<body data-gallery="9" data-gallery-layout="grid"
+<!-- 갤러리는 2열 폴라로이드 한 판(세로 12장, 더보기 없음).
+     사진은 모두 assets/photos/originals 에서 나왔고 순서도 같습니다.
+     가로 사진은 격자가 어긋나 콜라주로 보냈습니다.
+     나머지 동작은 script.js 가 본 화면과 공유합니다 -->
+<body data-gallery="12" data-gallery-layout="grid"
       data-tint-body data-cover-tint="#0d0c0b">   <!-- 표지에선 검정, 본문에선 흰색 (script.js) -->
 
 <!-- 아이콘 -->
@@ -127,7 +130,7 @@
 
   <!-- ══ 커버 ══ -->
   <header class="cover">
-    <img src="assets/photos/cover2.jpg" alt="" width="1280" height="1920">
+    <img src="assets/photos/cover2.webp" alt="" width="1280" height="1920">
 
     <!-- 장식선을 두지 않습니다. 커버의 주인공은 아래 손글씨라, 맨 위는
          이름만 조용히 놓습니다. 가운데 점은 명조 가운뎃점 그대로입니다. -->
@@ -162,9 +165,11 @@
 
   <!-- ══ 혼주 ══ -->
   <section class="sec sec--mist rise">
+    <!-- 세 칸(부모 이름 · 관계 · 이름)을 열로 맞춥니다. 그냥 흘려 쓰면
+         "아들"과 "딸"의 글자 수가 달라 두 줄의 이름 위치가 어긋납니다. -->
     <p class="parents">
-      이명현 · 손영숙<em>의 아들</em><b>희우</b><br>
-      신정범 · 조인숙<em>의 딸</em><b>우희</b>
+      <span class="fam">이명현 · 손영숙<i>의</i></span><span class="rel">아들</span><span class="who">희우</span>
+      <span class="fam">신정범 · 조인숙<i>의</i></span><span class="rel">딸</span><span class="who">우희</span>
     </p>
 
     <button class="pill" type="button" data-panel="p-call" aria-expanded="false" aria-controls="p-call">
@@ -174,42 +179,42 @@
 
     <div class="panel" id="p-call" data-open="false"><div><div class="panel-in">
       <div class="row">
-        <div class="row-who"><strong>신랑 이희우</strong><p>010-4330-4540</p></div>
+        <div class="row-who"><strong><em>신랑</em>이희우</strong><p>010-4330-4540</p></div>
         <div class="row-act">
           <a class="mini" href="tel:01043304540"><svg><use href="#i-phone"/></svg>전화</a>
           <a class="mini" href="sms:01043304540"><svg><use href="#i-sms"/></svg>문자</a>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>신부 신우희</strong><p>010-9199-2479</p></div>
+        <div class="row-who"><strong><em>신부</em>신우희</strong><p>010-9199-2479</p></div>
         <div class="row-act">
           <a class="mini" href="tel:01091992479"><svg><use href="#i-phone"/></svg>전화</a>
           <a class="mini" href="sms:01091992479"><svg><use href="#i-sms"/></svg>문자</a>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>신랑 아버지 이명현</strong><p>010-3565-4540</p></div>
+        <div class="row-who"><strong><em>신랑 아버지</em>이명현</strong><p>010-3565-4540</p></div>
         <div class="row-act">
           <a class="mini" href="tel:01035654540"><svg><use href="#i-phone"/></svg>전화</a>
           <a class="mini" href="sms:01035654540"><svg><use href="#i-sms"/></svg>문자</a>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>신랑 어머니 손영숙</strong><p>010-5509-4540</p></div>
+        <div class="row-who"><strong><em>신랑 어머니</em>손영숙</strong><p>010-5509-4540</p></div>
         <div class="row-act">
           <a class="mini" href="tel:01055094540"><svg><use href="#i-phone"/></svg>전화</a>
           <a class="mini" href="sms:01055094540"><svg><use href="#i-sms"/></svg>문자</a>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>신부 아버지 신정범</strong><p>010-9622-2479</p></div>
+        <div class="row-who"><strong><em>신부 아버지</em>신정범</strong><p>010-9622-2479</p></div>
         <div class="row-act">
           <a class="mini" href="tel:01096222479"><svg><use href="#i-phone"/></svg>전화</a>
           <a class="mini" href="sms:01096222479"><svg><use href="#i-sms"/></svg>문자</a>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>신부 어머니 조인숙</strong><p>010-3200-2479</p></div>
+        <div class="row-who"><strong><em>신부 어머니</em>조인숙</strong><p>010-3200-2479</p></div>
         <div class="row-act">
           <a class="mini" href="tel:01032002479"><svg><use href="#i-phone"/></svg>전화</a>
           <a class="mini" href="sms:01032002479"><svg><use href="#i-sms"/></svg>문자</a>
@@ -224,11 +229,11 @@
        배치는 옛 시안(index.old.html)의 12열 좌표를 그대로 씁니다. -->
   <section class="sec sec--collage rise">
     <div class="collage">
-      <div class="c-a"><img src="assets/photos/collage-1.jpg" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
-      <div class="c-b"><img src="assets/photos/collage-2.jpg" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="c-a"><img src="assets/photos/collage-1.webp" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="c-b"><img src="assets/photos/collage-2.webp" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
       <p class="collage-cap">Sunday, 25 October, 2026</p>
-      <div class="c-c"><img src="assets/photos/collage-3.jpg" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
-      <div class="c-d"><img src="assets/photos/collage-4.jpg" alt="" width="800" height="533" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="c-c"><img src="assets/photos/collage-3.webp" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="c-d"><img src="assets/photos/collage-4.webp" alt="" width="800" height="533" loading="lazy" decoding="async" draggable="false"></div>
     </div>
   </section>
 
@@ -318,21 +323,21 @@
     <div class="acct-group">
       <p class="acct-title">신랑측</p>
       <div class="row">
-        <div class="row-who"><strong>신랑 이희우</strong><p>카카오뱅크 3333071152694</p></div>
+        <div class="row-who"><strong><em>신랑</em>이희우</strong><p>카카오뱅크 3333071152694</p></div>
         <div class="row-act">
           <button class="mini" type="button" data-copy="3333071152694"><svg><use href="#i-copy"/></svg>복사</button>
           <button class="toss" type="button" data-bank="카카오뱅크" data-account="3333071152694" aria-label="토스로 송금"><img src="assets/toss-logo.png" alt="토스" width="171" height="52"></button>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>아버지 이명현</strong><p>우리은행 75708316857</p></div>
+        <div class="row-who"><strong><em>아버지</em>이명현</strong><p>우리은행 75708316857</p></div>
         <div class="row-act">
           <button class="mini" type="button" data-copy="75708316857"><svg><use href="#i-copy"/></svg>복사</button>
           <button class="toss" type="button" data-bank="우리은행" data-account="75708316857" aria-label="토스로 송금"><img src="assets/toss-logo.png" alt="토스" width="171" height="52"></button>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>어머니 손영숙</strong><p>NH농협 89001021456</p></div>
+        <div class="row-who"><strong><em>어머니</em>손영숙</strong><p>NH농협 89001021456</p></div>
         <div class="row-act">
           <button class="mini" type="button" data-copy="89001021456"><svg><use href="#i-copy"/></svg>복사</button>
           <button class="toss" type="button" data-bank="농협은행" data-account="89001021456" aria-label="토스로 송금"><img src="assets/toss-logo.png" alt="토스" width="171" height="52"></button>
@@ -343,21 +348,21 @@
     <div class="acct-group">
       <p class="acct-title">신부측</p>
       <div class="row">
-        <div class="row-who"><strong>신부 신우희</strong><p>우리은행 1002435036296</p></div>
+        <div class="row-who"><strong><em>신부</em>신우희</strong><p>우리은행 1002435036296</p></div>
         <div class="row-act">
           <button class="mini" type="button" data-copy="1002435036296"><svg><use href="#i-copy"/></svg>복사</button>
           <button class="toss" type="button" data-bank="우리은행" data-account="1002435036296" aria-label="토스로 송금"><img src="assets/toss-logo.png" alt="토스" width="171" height="52"></button>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>아버지 신정범</strong><p>NH농협 15312298040</p></div>
+        <div class="row-who"><strong><em>아버지</em>신정범</strong><p>NH농협 15312298040</p></div>
         <div class="row-act">
           <button class="mini" type="button" data-copy="15312298040"><svg><use href="#i-copy"/></svg>복사</button>
           <button class="toss" type="button" data-bank="농협은행" data-account="15312298040" aria-label="토스로 송금"><img src="assets/toss-logo.png" alt="토스" width="171" height="52"></button>
         </div>
       </div>
       <div class="row">
-        <div class="row-who"><strong>어머니 조인숙</strong><p>KB국민 60570201013554</p></div>
+        <div class="row-who"><strong><em>어머니</em>조인숙</strong><p>KB국민 60570201013554</p></div>
         <div class="row-act">
           <button class="mini" type="button" data-copy="60570201013554"><svg><use href="#i-copy"/></svg>복사</button>
           <button class="toss" type="button" data-bank="국민은행" data-account="60570201013554" aria-label="토스로 송금"><img src="assets/toss-logo.png" alt="토스" width="171" height="52"></button>
@@ -396,6 +401,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="script.js?v=e9dedd30" defer></script>
+<script src="script.js?v=ce3eee1a" defer></script>
 </body>
 </html>

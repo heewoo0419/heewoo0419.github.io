@@ -7,7 +7,7 @@
 
    화면별로 다른 값은 <body> 의 data-* 로 넘깁니다.
      · 갤러리 배치   data-gallery-layout="grid" 면 3열 한 판(더보기 없음)
-     · 사진 장수     data-gallery="9"
+     · 사진 장수     data-gallery="17"
      · 공유 주소     data-share-url="…"   (없으면 CONFIG.shareUrl)
      · 상태바 전환   data-tint-body       (있으면 body 배경색도 함께 바꿉니다 — iOS 26 용)
      · 표지 상태바   data-cover-tint="…"  (스크롤을 따라 바꿀 때 쓰는 색)
@@ -50,16 +50,17 @@ const CONFIG = {
   // 비워 두면 카카오톡 버튼이 시스템 공유(또는 주소 복사)로 대신 동작합니다.
   kakaoKey: "02485fdd8eff4ae4475876a8d91a1e7f",
 
-  gallery: 15,          // assets/photos/gallery-01.jpg … 순서로 읽습니다
+  gallery: 12,          // assets/photos/gallery-01.webp … 순서로 읽습니다
   galleryVisible: 6,    // 처음에 보여줄 장수 (나머지는 "더 보기")
 
   // 사진 원본 크기. img 의 width·height 속성으로 넣어 자리를 미리 잡습니다.
   // 사진을 바꾸면 이 값도 함께 고쳐야 지연 로딩 중 배치가 흔들리지 않습니다.
-  //   확인:  sips -g pixelWidth -g pixelHeight assets/photos/gallery-01.jpg
+  // 가로·세로 판단도 이 값으로 합니다 — w > h 면 .is-wide 가 붙습니다.
+  // 지금 갤러리는 세로만 씁니다(가로 사진은 콜라주로 보냈습니다). 가로를 다시
+  // 넣으면 여기에 크기만 적어 주면 나머지는 알아서 따라갑니다.
+  //   확인:  sips -g pixelWidth -g pixelHeight assets/photos/gallery-01.webp
   gallerySize: {
-    default: [1280, 1920],   // 대부분의 세로 사진
-    1:  [1280, 1886],
-    15: [1280, 853]          // 가로 사진
+    default: [1280, 1920]
   }
 };
 
@@ -114,13 +115,14 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
     const no = String(i).padStart(2, "0");
     const [w, h] = CONFIG.gallerySize[i] || CONFIG.gallerySize.default;
 
-    // 3열 한 판 배치에서는 감출 것도, 가로로 늘일 것도 없습니다
+    // 3열 한 판 배치에서는 감출 것이 없습니다("더 보기"가 없으므로)
     const hidden = (!PAGE.grid && i > CONFIG.galleryVisible) ? " is-hidden" : "";
-    const wide = (!PAGE.grid && w > h) ? " is-wide" : "";
+    // 가로 사진 표시. 2열 폴라로이드에서는 같은 칸을 가로 비율로 씁니다
+    const wide = (w > h) ? " is-wide" : "";
 
     html +=
       '<button class="tile' + hidden + wide + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
-        '<img src="assets/photos/gallery-' + no + '.jpg" alt="" loading="lazy" decoding="async" draggable="false"' +
+        '<img src="assets/photos/gallery-' + no + '.webp" alt="" loading="lazy" decoding="async" draggable="false"' +
           ' width="' + w + '" height="' + h + '"' +
           ' onerror="this.parentElement.classList.add(\'is-empty\');this.remove()">' +
       '</button>';
