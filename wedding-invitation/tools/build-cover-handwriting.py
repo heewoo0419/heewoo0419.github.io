@@ -46,6 +46,11 @@ INDEX = BASE / "index.html"
 
 LINES = ["Our", "Wedding Day"]        # 줄 단위. 두 줄을 각각 SVG 하나로 만듭니다
 
+# 낱말 사이(스페이스) 폭을 폰트 기본의 몇 배로 둘지. Bluekendy 의 스페이스는 199 로
+# 본문용이라, 두 낱말짜리 표지에는 넓어 "Wedding  Day" 처럼 벌어집니다.
+# 줄 전체는 폭 100% 로 맞춰 그리므로, 좁힌 만큼 글자가 그만큼 커집니다.
+SPACE_SCALE = 0.65
+
 # ── 손으로 고치는 표 ────────────────────────────────────────────
 # 번호는 각 단계 직전의 획 순서(0부터).
 REVERSE = {
@@ -260,7 +265,8 @@ def layout(text):
         if d:
             items.append({"ch": ch, "name": name, "d": d,
                           "x": x + pos.x_offset, "pen": pen_strokes(ch)})
-        x += pos.x_advance
+        # 스페이스는 그릴 것이 없어 items 에 들어가지 않지만, 폭만큼은 밀어야 합니다
+        x += round(pos.x_advance * SPACE_SCALE) if ch == " " else pos.x_advance
     return items
 
 

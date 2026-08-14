@@ -124,7 +124,10 @@ a{color:inherit;text-decoration:none}
 
 .cover-body{
   position:absolute;left:0;right:0;bottom:0;
-  padding:0 20px 30px;   /* 스크립트를 크게 쓰려고 커버만 좌우를 조금 좁힙니다 */
+  /* 좌우는 스크립트를 크게 쓰려고 커버만 조금 좁힙니다.
+     아래 20px 은 .cover-meta 의 margin-top 과 짝입니다 — 하단 기준으로 붙은
+     덩어리라, 캡션을 내린 만큼 여기서 빼야 손글씨가 제자리에 남습니다. */
+  padding:0 20px 20px;
 }
 /* 손글씨는 폰트가 아니라 SVG 입니다.
    Bluekendy 를 fontTools 로 떠서 글리프마다 path 로 심었습니다(커닝 반영).
@@ -137,6 +140,16 @@ a{color:inherit;text-decoration:none}
      BoundsPen 으로 실제 글자 자리를 재서 viewBox 를 좁힙니다. */
 .cover-script{
   position:relative;
+  /* 크기를 키울 때 폭(width)을 건드리면 아래 두 줄의 44.1% 비율이 어긋납니다.
+     그래서 두 줄을 한 덩어리로 확대합니다. 기준점을 아래 가운데에 두어
+     캡션과의 간격은 그대로 두고 위로만 자랍니다.
+
+     1.0554 = 1.08 × 2998/3068. 낱말 사이를 좁히면서 viewBox 가 3068 → 2998 로
+     줄었고, 폭 100% 에 맞춰 그리므로 글자가 그만큼 커집니다. 그 몫을 여기서
+     덜어내 글자 크기를 1.08 때와 똑같이 맞춥니다 — SPACE_SCALE 을 다시 만지면
+     이 값도 같이 고쳐야 합니다. */
+  transform:scale(1.0554);
+  transform-origin:50% 100%;
   /* 밝은 바닥에서 획이 뜨도록 아주 옅은 흰 글로우 (텍스트가 아니므로 filter 로) */
   filter:drop-shadow(0 1px 14px rgba(255,255,255,.6));
 }
@@ -147,9 +160,13 @@ a{color:inherit;text-decoration:none}
   overflow:visible;
 }
 /* 두 줄의 글자 크기를 맞추는 비율입니다. "Wedding Day" 를 100% 로 둘 때
-   "Our" 은 42.9% — 글리프 실측 폭에서 나온 값이라 임의로 바꾸면 크기가 어긋납니다. */
-.cs--our{width:42.9%}
-.cs--wed{width:100%;margin-top:-3%}   /* 두 줄을 바짝 붙입니다 */
+   "Our" 은 44.1% — 글리프 실측 폭에서 나온 값이라 임의로 바꾸면 크기가 어긋납니다.
+   build-cover-handwriting.py 가 돌 때마다 찍어 주는 값이니 그대로 옮겨 적습니다. */
+.cs--our{width:44.1%}
+/* 두 줄을 바짝 붙입니다. 두 SVG 는 각자 위아래 여백(viewBox VPAD)을 물고 있어,
+   음수 마진으로 그 여백을 겹쳐야 손으로 쓴 두 줄처럼 가까워집니다.
+   %는 .cover-script 의 폭 기준입니다 — 화면이 좁아지면 간격도 같이 좁아집니다. */
+.cs--wed{width:100%;margin-top:-6%}
 /* 스크린 리더와 검색용. 화면에는 SVG 만 보입니다 */
 .cover-script b{
   position:absolute;width:1px;height:1px;
@@ -194,7 +211,7 @@ a{color:inherit;text-decoration:none}
 }
 /* 레퍼런스와 같은 결 — 세리프 문장형, 스크립트와 같은 오렌지 */
 .cover-meta{
-  margin-top:13px;
+  margin-top:23px;   /* 손글씨와의 간격. .cover-body 의 padding-bottom 과 짝입니다 */
   /* 영문·숫자는 Garamond, 한글은 명조로 떨어지게 직접 나열합니다 */
   font-family:"EB Garamond","Nanum Myeongjo",serif;
   font-size:13.5px;
