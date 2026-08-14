@@ -71,7 +71,7 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="assets/fonts/bluekendy.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=4d70d0ed">
+<link rel="stylesheet" href="style.css?v=c6bf652f">
 </head>
 <!-- 갤러리는 정사각 3열 한 판(9장). 나머지 동작은 script.js 가 본 화면과 공유합니다 -->
 <body data-gallery="9" data-gallery-layout="grid"
@@ -216,6 +216,20 @@
         </div>
       </div>
     </div></div></div>
+  </section>
+
+  <!-- ══ 콜라주 ══
+       제목도 머리 표식도 두지 않습니다. 글이 아니라 숨 고르는 자리라서,
+       캡션 한 줄이 바로 아래 날짜 섹션으로 이어지게만 둡니다.
+       배치는 옛 시안(index.old.html)의 12열 좌표를 그대로 씁니다. -->
+  <section class="sec sec--collage rise">
+    <div class="collage">
+      <div class="c-a"><img src="assets/photos/collage-1.jpg" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="c-b"><img src="assets/photos/collage-2.jpg" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
+      <p class="collage-cap">Sunday, 25 October, 2026</p>
+      <div class="c-c"><img src="assets/photos/collage-3.jpg" alt="" width="800" height="1200" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="c-d"><img src="assets/photos/collage-4.jpg" alt="" width="800" height="533" loading="lazy" decoding="async" draggable="false"></div>
+    </div>
   </section>
 
   <!-- ══ 날짜 ══ -->

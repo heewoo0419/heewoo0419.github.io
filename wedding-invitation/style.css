@@ -176,6 +176,7 @@ a{color:inherit;text-decoration:none}
    우클릭 메뉴는 script.js 에서 사진에만 막습니다(텍스트 복사는 그대로 둡니다). */
 .cover>img,
 .grid img,
+.collage img,
 .lb-slide img{
   -webkit-touch-callout:none;
   -webkit-user-drag:none;
@@ -256,6 +257,35 @@ a{color:inherit;text-decoration:none}
 }
 .toss:hover{background:#f2f7ff}
 .toss img{display:block;height:13px;width:auto}
+
+/* ═══════════════════════════════════════════════════════════
+   콜라주 — 12열에 넉 장을 비대칭으로
+   ═══════════════════════════════════════════════════════════ */
+/* 아래 날짜 섹션과 같은 흰 바닥에서 이어지므로 사이 여백을 줄입니다.
+   캡션(Sunday, 25 October, 2026)이 다음 섹션을 예고하는 자리입니다. */
+.sec--collage{padding-bottom:22px}
+/* 좌표는 옛 시안(style.old.css)의 값 그대로입니다. 한 칸만 옮겨도 균형이
+   쉽게 무너져, 검증된 배치를 손대지 않았습니다. */
+.collage{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  column-gap:9px;row-gap:12px;
+}
+/* 사진이 오기 전 자리를 잡아 둡니다(갤러리와 같은 바닥색) */
+.collage>div{overflow:hidden;background:var(--mist)}
+/* 칸이 aspect-ratio 로 높이를 가지므로 사진은 그 안을 채우기만 합니다.
+   height 를 지정하지 않으면 img 의 height 속성(1200)이 그대로 먹습니다. */
+.collage img{width:100%;height:100%;object-fit:cover}
+.c-a{grid-column:1/7;grid-row:1/3;aspect-ratio:144/223}
+.c-b{grid-column:8/13;grid-row:1;aspect-ratio:95/112;margin-top:20px}
+.c-c{grid-column:9/13;grid-row:2;aspect-ratio:97/112;align-self:end}
+.c-d{grid-column:2/13;grid-row:3;aspect-ratio:248/110}
+/* 왼쪽 아래 빈 칸에 흘려 넣습니다 */
+.collage-cap{
+  grid-column:1/8;grid-row:2;align-self:end;
+  font-family:var(--gm);font-size:11px;letter-spacing:.04em;
+  text-align:left;color:var(--sub);
+}
 
 /* ═══════════════════════════════════════════════════════════
    날짜 — Playfair 숫자, 달력, 남은 시간
