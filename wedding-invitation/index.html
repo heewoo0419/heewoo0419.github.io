@@ -70,7 +70,7 @@
 <!-- 표지 손글씨는 첫 화면에서 바로 필요하므로 미리 받아 둡니다 -->
 <link rel="preload" href="assets/fonts/bluekendy.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="style.css?v=e2f02eee">
+<link rel="stylesheet" href="style.css?v=9fff9734">
 </head>
 <!-- 갤러리는 정사각 3열 한 판(9장). 나머지 동작은 script.js 가 본 화면과 공유합니다 -->
 <body data-gallery="9" data-gallery-layout="grid"
@@ -128,7 +128,13 @@
   <header class="cover">
     <img src="assets/photos/cover2.jpg" alt="" width="1280" height="1920">
 
-    <p class="cover-top"><i></i>신랑 이희우<i></i>신부 신우희<i></i></p>
+    <!-- 장식선을 두지 않습니다. 커버의 주인공은 아래 손글씨라, 맨 위는
+         이름만 조용히 놓습니다. 가운데 점은 명조 가운뎃점 그대로입니다. -->
+    <p class="cover-top">
+      <span>신랑<b>이희우</b></span>
+      <span class="dot">·</span>
+      <span>신부<b>신우희</b></span>
+    </p>
 
     <div class="cover-body">
       <p class="cover-script"><span>Our</span><span>Wedding Day</span></p>
