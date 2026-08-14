@@ -31,7 +31,7 @@ const CONFIG = {
 
   // 공유로 나가는 기본 주소. 화면마다 다르게 하려면 <body data-share-url="…"> 로 덮어씁니다.
   shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
-  shareImage: "https://heewoo0419.github.io/wedding-invitation/og-image.jpg",
+  shareImage: "https://heewoo0419.github.io/wedding-invitation/assets/og-image.jpg",
 
   // 카카오톡 카드·시스템 공유에 찍히는 제목. og:title 과 같은 문구로 맞춰 두세요.
   shareTitle: "희우 💍 우희 결혼합니다.",
@@ -41,7 +41,7 @@ const CONFIG = {
   // 세로로 길게 두면(2:3, 1:2) 카드에서 위아래가 잘립니다.
   // 카카오는 이 주소로 받은 그림을 자기 서버에 캐시합니다. 그림을 갈 때는
   // 파일명을 함께 바꿔야 새 그림이 나갑니다.
-  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/kakao-share-cover-1x1.jpg",
+  kakaoImage: "https://heewoo0419.github.io/wedding-invitation/assets/kakao-share-cover-1x1.jpg",
   kakaoDesc: "귀한 걸음으로 함께해 주세요.",
 
   // 카카오톡 공유(미리보기 카드)에 필요한 JavaScript 키.
@@ -59,8 +59,10 @@ const CONFIG = {
   // 지금 갤러리는 세로만 씁니다(가로 사진은 콜라주로 보냈습니다). 가로를 다시
   // 넣으면 여기에 크기만 적어 주면 나머지는 알아서 따라갑니다.
   //   확인:  sips -g pixelWidth -g pixelHeight assets/photos/gallery-01.webp
+  // 소스(originals) 해상도를 줄이지 않고 그대로 내보냅니다 — 줄이는 순간
+  // 잔머리 같은 가는 결이 깎여, 품질을 올리는 것보다 손실이 큽니다.
   gallerySize: {
-    default: [1280, 1920]
+    default: [1536, 2304]
   }
 };
 
