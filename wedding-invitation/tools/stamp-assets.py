@@ -17,8 +17,8 @@ import sys
 HERE = pathlib.Path(__file__).resolve().parent.parent   # wedding-invitation/
 
 # 어느 html 이 어떤 파일을 참조하는지
-PAGES = ["index.html", "index.old.html"]
-ASSETS = ["style.css", "style.old.css", "script.js"]
+PAGES = ["index.html"]
+ASSETS = ["style.css", "script.js"]
 
 
 def digest(path: pathlib.Path) -> str:

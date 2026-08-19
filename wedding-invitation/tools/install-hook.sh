@@ -14,7 +14,7 @@ cat > "$HOOK" <<'EOF'
 # style·script 를 고쳤으면 html 의 ?v= 를 새 값으로 바꾸고, 그 변경도 함께 커밋합니다.
 ROOT=$(git rev-parse --show-toplevel)
 python3 "$ROOT/wedding-invitation/tools/stamp-assets.py" || exit 1
-git add "$ROOT/wedding-invitation/index.html" "$ROOT/wedding-invitation/index.old.html" 2>/dev/null || true
+git add "$ROOT/wedding-invitation/index.html" 2>/dev/null || true
 EOF
 
 chmod +x "$HOOK"

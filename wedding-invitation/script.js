@@ -1,16 +1,5 @@
 /* ============================================================
-   희우 · 우희 청첩장 — 공통 스크립트
-
-   index.html(현재 화면) 과 index.old.html(이전 디자인) 이 이 파일 하나를
-   함께 씁니다. 두 화면의 마크업이 완전히 같지는 않으므로, 각 기능은
-   자기 DOM 이 있을 때만 동작합니다. 없는 화면에서는 조용히 넘어갑니다.
-
-   화면별로 다른 값은 <body> 의 data-* 로 넘깁니다.
-     · 갤러리 배치   data-gallery-layout="grid" 면 3열 한 판(더보기 없음)
-     · 사진 장수     data-gallery="17"
-     · 공유 주소     data-share-url="…"   (없으면 CONFIG.shareUrl)
-     · 상태바 전환   data-tint-body       (있으면 body 배경색도 함께 바꿉니다 — iOS 26 용)
-     · 표지 상태바   data-cover-tint="…"  (스크롤을 따라 바꿀 때 쓰는 색)
+   희우 · 우희 청첩장
    ============================================================ */
 
 /* ============================================================
@@ -29,7 +18,7 @@ const CONFIG = {
   // 같은 Application 의 "Web 서비스 URL" 에 이 페이지의 도메인도 등록해야 합니다.
   naverKeyId: "8ecuewium6",
 
-  // 공유로 나가는 기본 주소. 화면마다 다르게 하려면 <body data-share-url="…"> 로 덮어씁니다.
+  // 공유로 나가는 주소.
   shareUrl: "https://heewoo0419.github.io/wedding-invitation/",
   shareImage: "https://heewoo0419.github.io/wedding-invitation/assets/og-image.jpg",
 
@@ -51,29 +40,13 @@ const CONFIG = {
   kakaoKey: "02485fdd8eff4ae4475876a8d91a1e7f",
 
   gallery: 12,          // assets/photos/gallery-01.webp … 순서로 읽습니다
-  galleryVisible: 6,    // 처음에 보여줄 장수 (나머지는 "더 보기")
 
   // 사진 원본 크기. img 의 width·height 속성으로 넣어 자리를 미리 잡습니다.
   // 사진을 바꾸면 이 값도 함께 고쳐야 지연 로딩 중 배치가 흔들리지 않습니다.
-  // 가로·세로 판단도 이 값으로 합니다 — w > h 면 .is-wide 가 붙습니다.
-  // 지금 갤러리는 세로만 씁니다(가로 사진은 콜라주로 보냈습니다). 가로를 다시
-  // 넣으면 여기에 크기만 적어 주면 나머지는 알아서 따라갑니다.
   //   확인:  sips -g pixelWidth -g pixelHeight assets/photos/gallery-01.webp
   // 소스(originals) 해상도를 줄이지 않고 그대로 내보냅니다 — 줄이는 순간
   // 잔머리 같은 가는 결이 깎여, 품질을 올리는 것보다 손실이 큽니다.
-  gallerySize: {
-    default: [1536, 2304]
-  }
-};
-
-/* 화면이 따로 지정한 값이 있으면 그것을 씁니다 */
-const PAGE = {
-  gallery: Number(document.body.dataset.gallery) || CONFIG.gallery,
-  grid: document.body.dataset.galleryLayout === "grid",
-  // 공유 주소 — 화면마다 자기 주소를 내보냅니다.
-  //   index.html:     속성이 없어 CONFIG.shareUrl(=대표 주소)
-  //   index.old.html: data-share-url="…/index.old.html"
-  shareUrl: document.body.dataset.shareUrl || CONFIG.shareUrl
+  gallerySize: [1536, 2304]
 };
 
 /* ---------- 토스트 · 복사 ---------- */
@@ -104,40 +77,24 @@ document.querySelectorAll("[data-copy]").forEach(btn => {
   btn.addEventListener("click", () => copyText(btn.dataset.copy));
 });
 
-/* ---------- 갤러리 ----------
-   본 화면은 세로·가로가 섞인 벽돌 배치에 "더 보기"를 두고,
-   시안은 3열 한 판만 깝니다. 어느 쪽이든 타일은 .tile 이라서
-   아래 라이트박스가 그대로 집어 씁니다.                        */
+/* ---------- 갤러리 ---------- */
 (function buildGallery(){
   const grid = document.getElementById("grid");
   if (!grid) return;
 
   let html = "";
-  for (let i = 1; i <= PAGE.gallery; i++) {
+  for (let i = 1; i <= CONFIG.gallery; i++) {
     const no = String(i).padStart(2, "0");
-    const [w, h] = CONFIG.gallerySize[i] || CONFIG.gallerySize.default;
-
-    // 3열 한 판 배치에서는 감출 것이 없습니다("더 보기"가 없으므로)
-    const hidden = (!PAGE.grid && i > CONFIG.galleryVisible) ? " is-hidden" : "";
-    // 가로 사진 표시. 2열 폴라로이드에서는 같은 칸을 가로 비율로 씁니다
-    const wide = (w > h) ? " is-wide" : "";
+    const [w, h] = CONFIG.gallerySize;
 
     html +=
-      '<button class="tile' + hidden + wide + '" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
+      '<button class="tile" type="button" aria-label="사진 ' + i + ' 크게 보기">' +
         '<img src="assets/photos/gallery-' + no + '.webp" alt="" loading="lazy" decoding="async" draggable="false"' +
           ' width="' + w + '" height="' + h + '"' +
-          ' onerror="this.parentElement.classList.add(\'is-empty\');this.remove()">' +
+          ' onerror="this.remove()">' +
       '</button>';
   }
   grid.innerHTML = html;
-
-  const moreBtn = document.getElementById("moreBtn");
-  if (!moreBtn) return;
-  if (PAGE.grid || PAGE.gallery <= CONFIG.galleryVisible) { moreBtn.remove(); return; }
-  moreBtn.addEventListener("click", () => {
-    grid.querySelectorAll(".is-hidden").forEach(el => el.classList.remove("is-hidden"));
-    moreBtn.remove();
-  });
 })();
 
 /* ---------- 달력 ----------
@@ -372,15 +329,7 @@ document.querySelectorAll(".toss").forEach(btn => {
   });
 });
 
-/* ---------- 접었다 펴는 영역 ----------
-   본 화면은 .acc-head 가 부모의 .open 을 토글하고,
-   시안은 [data-panel] 이 대상 패널의 data-open 을 바꿉니다. */
-document.querySelectorAll(".acc-head").forEach(head => {
-  head.addEventListener("click", () => {
-    const open = head.parentElement.classList.toggle("open");
-    head.setAttribute("aria-expanded", String(open));
-  });
-});
+/* ---------- 접었다 펴는 영역 ---------- */
 document.querySelectorAll("[data-panel]").forEach(btn => {
   btn.addEventListener("click", () => {
     const panel = document.getElementById(btn.dataset.panel);
@@ -535,37 +484,10 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
    사진에만 걸어, 계좌번호 같은 글자는 그대로 고르고 복사할 수 있게 둡니다. */
 (function guardPhotos(){
   const isPhoto = t =>
-    t && t.tagName === "IMG" && t.closest("#grid, .lightbox, .cover, .ph");
+    t && t.tagName === "IMG" && t.closest("#grid, .lightbox, .cover");
 
   document.addEventListener("contextmenu", e => { if (isPhoto(e.target)) e.preventDefault(); });
   document.addEventListener("dragstart",  e => { if (isPhoto(e.target)) e.preventDefault(); });
-})();
-
-/* ---------- 일정 저장 (.ics) ---------- */
-(function saveIcs(){
-  const btn = document.getElementById("icsBtn");
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    const start = CONFIG.wedding;
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
-    const fmt = d => d.getFullYear() +
-      String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0") + "T" +
-      String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0") + "00";
-    const ics = [
-      "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//wedding//KR","BEGIN:VEVENT",
-      "SUMMARY:" + CONFIG.groom + " · " + CONFIG.bride + " 결혼식",
-      "DTSTART;TZID=Asia/Seoul:" + fmt(start),
-      "DTEND;TZID=Asia/Seoul:" + fmt(end),
-      "LOCATION:" + CONFIG.venue + " " + CONFIG.address,
-      "END:VEVENT","END:VCALENDAR"
-    ].join("\r\n");
-    const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
-    const a = document.createElement("a");
-    a.href = url; a.download = "wedding.ics";
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast("캘린더 파일을 내려받았습니다");
-  });
 })();
 
 /* ---------- 카카오톡 공유 ----------
@@ -613,19 +535,19 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
     const data = {
       title: CONFIG.shareTitle,
       text: CONFIG.shareText,
-      url: PAGE.shareUrl
+      url: CONFIG.shareUrl
     };
     if (navigator.share) {
       try { await navigator.share(data); return; } catch {}
     }
-    copyText(PAGE.shareUrl);
+    copyText(CONFIG.shareUrl);
     showToast("주소를 복사했습니다. 카카오톡에 붙여 넣어 주세요");
   }
 
   btn.addEventListener("click", () => {
     if (!ready) { fallback(); return; }
 
-    const link = { mobileWebUrl: PAGE.shareUrl, webUrl: PAGE.shareUrl };
+    const link = { mobileWebUrl: CONFIG.shareUrl, webUrl: CONFIG.shareUrl };
     const content = {
       title: CONFIG.shareTitle,
       description: CONFIG.kakaoDesc || CONFIG.shareText,
@@ -668,13 +590,13 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
   const linkBtn = document.getElementById("linkBtn");
   const shareBtn = document.getElementById("shareBtn");
 
-  if (linkBtn) linkBtn.addEventListener("click", () => copyText(PAGE.shareUrl));
+  if (linkBtn) linkBtn.addEventListener("click", () => copyText(CONFIG.shareUrl));
 
   if (shareBtn) shareBtn.addEventListener("click", async () => {
     const data = {
       title: CONFIG.shareTitle,
       text: CONFIG.shareText,
-      url: PAGE.shareUrl
+      url: CONFIG.shareUrl
     };
     if (navigator.share) {
       try { await navigator.share(data); } catch {}
@@ -693,8 +615,7 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
    그래서 둘을 함께 바꿉니다. 사파리는 화면 위아래 툴바를 언제나 같은 색 하나로
    칠하며, 위와 아래를 각각 다르게 지정하는 방법은 없습니다.
 
-   body 배경까지 바꿀 화면만 <body data-tint-body> 를 답니다. 옛 화면(index.old.html)은
-   body 배경(#e8e6e4)이 디자인의 일부라 이 속성을 두지 않고 meta 만 따라갑니다.
+   body 배경까지 바꾸려면 <body data-tint-body> 를 답니다.
    표지 톤은 <body data-cover-tint="#000"> 으로 지정합니다. */
 (function statusBarTint(){
   const meta = document.querySelector('meta[name="theme-color"]');
@@ -723,20 +644,15 @@ document.querySelectorAll("[data-panel]").forEach(btn => {
   apply();
 })();
 
-/* ---------- 스크롤 등장 ----------
-   본 화면은 .reveal, 시안은 .rise 를 씁니다. 등장 시점이 조금 달라
-   관찰자를 따로 둡니다. */
+/* ---------- 스크롤 등장 ---------- */
 (function reveal(){
-  const watch = (selector, options) => {
-    const targets = document.querySelectorAll(selector);
-    if (!targets.length) return;
-    const io = new IntersectionObserver(list => {
-      list.forEach(en => {
-        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-      });
-    }, options);
-    targets.forEach(el => io.observe(el));
-  };
-  watch(".reveal", { threshold: .12 });
-  watch(".rise", { rootMargin: "0px 0px -12% 0px" });
+  const targets = document.querySelectorAll(".rise");
+  const io = new IntersectionObserver(list => {
+    list.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("in");
+      io.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -12% 0px" });
+  targets.forEach(el => io.observe(el));
 })();

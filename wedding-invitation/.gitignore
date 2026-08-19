@@ -6,7 +6,7 @@
 assets/photos/originals/
 
 # 폰트 원본 — 상용 폰트라 저장소에 올리지 않습니다.
-# 배포에 쓰는 것은 서브셋한 woff2 뿐입니다 (rockville-solid, bluekendy).
+# 표지 SVG 다시 생성에만 사용합니다.
 assets/fonts/*.ttf
 assets/fonts/*.otf
 assets/fonts/unused/

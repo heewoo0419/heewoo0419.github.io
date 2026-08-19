@@ -1,8 +1,5 @@
 /* ============================================================
-   희우 · 우희 청첩장 — 현재 화면(index.html) 스타일
-
-   이전 디자인의 스타일은 style.old.css 에 있습니다.
-   두 화면은 마크업이 달라 스타일도 따로 둡니다.
+   희우 · 우희 청첩장 스타일
    ============================================================ */
 
 /* ═══════════════════════════════════════════════════════════
@@ -263,12 +260,12 @@ a{color:inherit;text-decoration:none}
 .body{margin-top:20px;font-size:15px;line-height:2.15}
 .body--sub{color:var(--sub);font-size:14px;line-height:2}
 
-/* 혼주 — 옛 시안(style.old.css)의 세 칸 정렬을 그대로 가져왔습니다.
+/* 혼주 — 세 칸 정렬로 두 줄의 이름 위치를 맞춥니다.
    부모 이름은 오른쪽, 관계는 가운데, 이름은 왼쪽으로 붙여 두 줄이 열로 맞습니다.
    섹션이 text-align:center 라 inline-grid 덩어리째 가운데에 놓입니다. */
 .parents{
   margin-top:26px;
-  /* 옛 시안은 inline-grid 였지만, 이 화면은 바로 뒤에 인라인인 .pill 버튼이 와서
+  /* inline-grid 로 두면 바로 뒤의 .pill 버튼이 같은 줄로 올라와서
      같은 줄로 올라붙습니다. 블록으로 두고 justify-content 로 가운데에 모읍니다. */
   display:grid;
   grid-template-columns:auto auto auto;
@@ -348,7 +345,7 @@ a{color:inherit;text-decoration:none}
 /* 아래 날짜 섹션과 같은 흰 바닥에서 이어지므로 사이 여백을 줄입니다.
    캡션(Sunday, 25 October, 2026)이 다음 섹션을 예고하는 자리입니다. */
 .sec--collage{padding-bottom:22px}
-/* 좌표는 옛 시안(style.old.css)의 값 그대로입니다. 한 칸만 옮겨도 균형이
+/* 검증된 좌표입니다. 한 칸만 옮겨도 균형이
    쉽게 무너져, 검증된 배치를 손대지 않았습니다. */
 .collage{
   display:grid;
@@ -381,7 +378,7 @@ a{color:inherit;text-decoration:none}
 .dday span{color:var(--faint);font-weight:500;margin:0 4px}
 .dday-sub{margin-top:8px;font-size:15px}
 
-/* 달력 — 클래스 이름은 본 화면과 같습니다(script.js 가 함께 그립니다) */
+/* 달력 — script.js 가 그립니다 */
 .cal{margin:26px auto 0;width:100%;max-width:320px;border-collapse:collapse}
 .cal th{
   padding-bottom:14px;font-size:13px;font-weight:400;color:var(--ink);
@@ -411,16 +408,14 @@ a{color:inherit;text-decoration:none}
 .count-line b{color:var(--point);font-weight:400}
 
 /* ═══════════════════════════════════════════════════════════
-   갤러리 — 3×3, 실선처럼 좁은 간격
+   갤러리 — 2열 폴라로이드
    ═══════════════════════════════════════════════════════════ */
-/* 2열 폴라로이드. 칸을 넓게 쓰는 대신 장수가 많아 스크롤이 길어지므로,
-   사진 사이는 붙이지 않고 여백을 둡니다. */
+/* 칸을 넓게 쓰고 사진 사이에 여백을 둡니다. */
 .grid{
   margin-top:26px;
   display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
 }
-/* 폴라로이드 — 아래를 두껍게 남긴 흰 판. 이 섹션 바닥이 회색(sec--mist)이라
-   흰 판이 떠 보입니다. 여백에 글씨는 넣지 않습니다(17장이면 산만해집니다). */
+/* 폴라로이드 — 아래를 두껍게 남긴 흰 판. */
 .grid .tile{
   display:block;line-height:0;
   padding:9px 9px 34px;
@@ -430,12 +425,6 @@ a{color:inherit;text-decoration:none}
 /* height:auto 가 없으면 img 의 height 속성이 aspect-ratio 를 덮습니다.
    4:5 는 원본 2:3 에서 위아래만 조금 덜어낸 비율이라 인물이 잘 남습니다. */
 .grid img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;background:var(--mist)}
-/* 가로 사진이 섞이면 같은 한 칸에 가로로 눕힙니다. 세로 4:5 와 짝이 맞게 5:4 로
-   두어 폴라로이드를 옆으로 돌려 찍은 모양이 됩니다.
-   지금 갤러리는 세로만 쓰지만(가로는 콜라주로 보냈습니다), 사진을 바꿔 가로가
-   들어오면 script.js 가 .is-wide 를 붙여 이 규칙이 살아납니다. */
-.grid .is-wide img{aspect-ratio:5/4}
-
 /* ═══════════════════════════════════════════════════════════
    위치
    ═══════════════════════════════════════════════════════════ */
