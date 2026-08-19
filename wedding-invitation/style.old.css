@@ -220,19 +220,6 @@ a{color:inherit;text-decoration:none}
   font-size:11.5px;
 }
 .parents .who{text-align:left;letter-spacing:.04em}
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin:30px 0 0;
-  padding:12px 28px;
-  border-radius:26px;
-  background:var(--mist);
-  font-size:13px;
-  color:var(--ink-soft);
-}
-.sec--mist .pill{background:#ebe9e7}
-.pill:hover{background:#eceae8}
 
 /* ── 사진 콜라주 ───────────────────────────────────── */
 .collage{
@@ -580,14 +567,6 @@ a{color:inherit;text-decoration:none}
 .acc-panel>div{overflow:hidden}
 .acc-inner{padding:0 17px 4px;background:var(--paper)}
 .sec--mist .acc-inner{background:var(--paper)}
-.acc-text{
-  margin:0;
-  padding:15px 0;
-  font-size:12.5px;
-  line-height:2;
-  color:var(--ink-soft);
-}
-
 /* 계좌 — 접지 않고 펼쳐 둡니다 */
 .acct-group{
   margin:14px 0 0;
