@@ -340,13 +340,14 @@ a{color:inherit;text-decoration:none}
 .toss img{display:block;height:13px;width:auto}
 
 /* ═══════════════════════════════════════════════════════════
-   콜라주 — 12열에 넉 장을 비대칭으로
+   콜라주 — 12열에 다섯 장을 비대칭으로
    ═══════════════════════════════════════════════════════════ */
 /* 아래 날짜 섹션과 같은 흰 바닥에서 이어지므로 사이 여백을 줄입니다.
    캡션(Sunday, 25 October, 2026)이 다음 섹션을 예고하는 자리입니다. */
 .sec--collage{padding-bottom:22px}
-/* 검증된 좌표입니다. 한 칸만 옮겨도 균형이
-   쉽게 무너져, 검증된 배치를 손대지 않았습니다. */
+/* 위 석 장은 검증된 좌표입니다. 한 칸만 옮겨도 균형이 쉽게 무너집니다.
+   아래 두 장은 그 블록을 좌우로 뒤집어 한 번 더 놓았습니다 —
+   c-e 는 c-a 와 같은 크기, c-d 는 그 옆 반쪽을 채우는 정사각입니다. */
 .collage{
   display:grid;
   grid-template-columns:repeat(12,1fr);
@@ -360,10 +361,12 @@ a{color:inherit;text-decoration:none}
 .c-a{grid-column:1/7;grid-row:1/3;aspect-ratio:144/223}
 .c-b{grid-column:8/13;grid-row:1;aspect-ratio:95/112;margin-top:20px}
 .c-c{grid-column:9/13;grid-row:2;aspect-ratio:97/112;align-self:end}
-.c-d{grid-column:2/13;grid-row:3;aspect-ratio:248/110}
-/* 왼쪽 아래 빈 칸에 흘려 넣습니다 */
+.c-d{grid-column:1/7;grid-row:3;aspect-ratio:1/1;margin-top:20px}
+.c-d img{object-position:62% 50%}   /* 가로 사진이라 두 사람이 있는 오른쪽을 남깁니다 */
+.c-e{grid-column:7/13;grid-row:3/5;aspect-ratio:144/223}
+/* c-d 아래 빈 칸에 흘려 넣어, 바로 아래 날짜 섹션으로 이어지게 합니다 */
 .collage-cap{
-  grid-column:1/8;grid-row:2;align-self:end;
+  grid-column:1/7;grid-row:4;align-self:end;
   font-family:var(--gm);font-size:11px;letter-spacing:.04em;
   text-align:left;color:var(--sub);
 }

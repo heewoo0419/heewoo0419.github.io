@@ -39,7 +39,7 @@ const CONFIG = {
   // 비워 두면 카카오톡 버튼이 시스템 공유(또는 주소 복사)로 대신 동작합니다.
   kakaoKey: "02485fdd8eff4ae4475876a8d91a1e7f",
 
-  gallery: 14,          // assets/photos/gallery-01.webp … 순서로 읽습니다
+  gallery: 16,          // assets/photos/gallery-01.webp … 순서로 읽습니다
 
   // 사진 원본 크기. img 의 width·height 속성으로 넣어 자리를 미리 잡습니다.
   // 사진을 바꾸면 이 값도 함께 고쳐야 지연 로딩 중 배치가 흔들리지 않습니다.
