@@ -23,7 +23,10 @@ ASSETS = ["style.css", "script.js"]
 
 def digest(path: pathlib.Path) -> str:
     """내용이 같으면 같은 값이 나오도록 짧은 해시를 만듭니다."""
-    return hashlib.sha1(path.read_bytes()).hexdigest()[:8]
+    # GitHub Pages는 Git에 저장된 LF 파일을 배포합니다. Windows 체크아웃의
+    # CRLF를 그대로 해시하면 실제 배포 파일과 다른 버전 키가 찍힙니다.
+    content = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha1(content).hexdigest()[:8]
 
 
 def main() -> int:
