@@ -246,6 +246,7 @@ function initNaverMap(){
    ============================================================ */
 const UA = navigator.userAgent;
 const isMobile = /iPhone|iPad|iPod|Android/i.test(UA);
+const isAndroid = /Android/i.test(UA);
 
 const MAP_APPS = {
   naver: {
@@ -266,6 +267,25 @@ const MAP_APPS = {
   }
 };
 
+/* 안드로이드 인앱브라우저(카카오톡·네이버 등)는 모르는 스킴을 만나면
+   아무 일도 하지 않고 조용히 실패합니다. 같은 주소를 intent:// 로 바꿔 주면
+   웹뷰가 패키지를 보고 앱으로 넘겨 주고, 앱이 없으면 스토어로 보냅니다.   */
+const ANDROID_PACKAGE = {
+  supertoss: "viva.republica.toss",
+  nmap:      "com.nhn.android.nmap",
+  kakaomap:  "net.daum.android.map",
+  tmap:      "com.skt.tmap.ku"
+};
+
+function toAndroidIntent(scheme){
+  const at = scheme.indexOf("://");
+  const proto = scheme.slice(0, at);
+  const pkg = ANDROID_PACKAGE[proto];
+  if (at < 0 || !pkg) return scheme;
+  return "intent://" + scheme.slice(at + 3) +
+         "#Intent;scheme=" + proto + ";package=" + pkg + ";end";
+}
+
 /* 앱 스킴을 시도하고, 화면이 그대로면 폴백 주소로 넘깁니다.
    토스 송금도 같은 방식이라 함께 씁니다. */
 function tryAppScheme(scheme, onStay){
@@ -281,7 +301,7 @@ function tryAppScheme(scheme, onStay){
     onStay();
   }, 1100);
 
-  location.href = scheme;
+  location.href = isAndroid ? toAndroidIntent(scheme) : scheme;
 }
 
 function openMapApp(key, webUrl){
