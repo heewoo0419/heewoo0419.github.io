@@ -339,6 +339,9 @@ document.querySelectorAll(".toss").forEach(btn => {
       return;
     }
 
+    // Android에서 토스가 계좌를 자동 입력하지 못해도 바로 붙여넣을 수 있게 합니다.
+    if (isAndroid) copyText(account);
+
     tryAppScheme(
       "supertoss://send?bank=" + encodeURIComponent(bank) + "&accountNo=" + encodeURIComponent(account),
       () => {
